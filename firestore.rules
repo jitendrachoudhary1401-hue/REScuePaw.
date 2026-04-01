@@ -1,0 +1,83 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: otps
+// Document ID: auto-generated
+// Fields:
+//   - email: string (required) - The email address the OTP was sent to
+//   - otp: string (required) - The 6-digit code
+//   - expiresAt: timestamp (required) - When the OTP expires
+//   - createdAt: timestamp (required) - When the OTP was created
+//
+// Collection: users
+// Document ID: userId (uid)
+// Fields:
+//   - uid: string (required) - The unique identifier for the user
+//   - email: string (required) - The email address of the user
+//   - createdAt: timestamp (required) - When the user account was created
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "jitendrachoudhary1401@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    // ===============================================================
+    // Domain Validators
+    // ===============================================================
+
+    function isValidUser(data) {
+      return hasRequiredFields(['uid', 'email', 'createdAt']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.createdAt is timestamp;
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // OTPs should only be accessible by the server using a secret key
+    match /otps/{otpId} {
+      allow create: if request.resource.data._serverSecret == "ai-studio-secret-key";
+      allow read, delete: if resource.data._serverSecret == "ai-studio-secret-key";
+      allow update: if false;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) && 
+                      request.resource.data.uid == resource.data.uid &&
+                      request.resource.data.email == resource.data.email;
+      allow delete: if isAdmin();
+    }
+  }
+}

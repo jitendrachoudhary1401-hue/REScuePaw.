@@ -1,0 +1,8 @@
+{
+  "name": "REScue Paw  tester 2",
+  "description": "An emergency response app for street animals allowing users to report injuries, get AI-driven medical analysis, and connect with nearby NGOs/Vets.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}

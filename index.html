@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#059669" />
+    <title>REScue Paw</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --color-primary: #059669;
+        --color-primary-light: #d1fae5;
+        --color-primary-dark: #047857;
+
+        --color-secondary: #f59e0b;
+        --color-secondary-light: #fef3c7;
+        
+        --color-background: #f8fafc;
+        --color-surface: #ffffff;
+        
+        --color-text-primary: #111827;
+        --color-text-secondary: #4b5563;
+        --color-text-muted: #9ca3af;
+
+        --border-color: #f3f4f6;
+        --border-radius-lg: 1.5rem; /* 24px */
+        --border-radius-xl: 2rem; /* 32px */
+
+        --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+        --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+        --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.1);
+
+        font-size: 15px;
+      }
+      
+      @media (min-width: 768px) {
+        :root {
+          font-size: 16px;
+        }
+      }
+
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        background-color: var(--color-background);
+        color: var(--color-text-primary);
+        -webkit-tap-highlight-color: transparent;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* Base Animations */
+      @keyframes enter {
+        from {
+          opacity: var(--tw-enter-opacity, 1);
+          transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0) scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), var(--tw-enter-scale, 1)) rotate(var(--tw-enter-rotate, 0));
+        }
+      }
+
+      .animate-in {
+        animation-name: enter;
+        animation-duration: 300ms;
+        animation-fill-mode: both;
+        --tw-enter-opacity: initial;
+        --tw-enter-scale: initial;
+        --tw-enter-rotate: initial;
+        --tw-enter-translate-x: initial;
+        --tw-enter-translate-y: initial;
+      }
+
+      .fade-in { --tw-enter-opacity: 0; }
+      .zoom-in-95 { --tw-enter-scale: 0.95; }
+      .slide-in-from-bottom-8 { --tw-enter-translate-y: 2rem; }
+      .slide-in-from-top-4 { --tw-enter-translate-y: -1rem; }
+      .slide-in-from-right-4 { --tw-enter-translate-x: 1rem; }
+      .slide-in-from-left-4 { --tw-enter-translate-x: -1rem; }
+
+      .duration-300 { animation-duration: 300ms; }
+      .duration-500 { animation-duration: 500ms; }
+      .duration-700 { animation-duration: 700ms; }
+      .duration-1000 { animation-duration: 1000ms; }
+
+      @keyframes soft-pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+      }
+      .animate-soft-pulse {
+        animation: soft-pulse 2s infinite ease-in-out;
+      }
+
+      /* Custom animations for specific components */
+      @keyframes loading-bar {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(200%); }
+      }
+      .animate-loading-bar {
+        animation: loading-bar 1.5s infinite ease-in-out;
+      }
+
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 8s linear infinite;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.12.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.4",
+    "path": "https://esm.sh/path@^0.12.7",
+    "firebase/": "https://esm.sh/firebase@^12.9.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
