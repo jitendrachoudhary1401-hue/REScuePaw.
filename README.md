@@ -1,4 +1,4 @@
-<![CDATA[<div align="center">
+<div align="center">
 
 # 🐾 REScue Paw
 
@@ -13,312 +13,266 @@
 
 <br/>
 
-> **REScue Paw** is an AI-powered street animal rescue platform that connects citizens, volunteers, NGOs, and veterinarians to report, rescue, treat, and rehome injured or abandoned animals — all in real time.
+An **AI-powered street animal rescue platform** that connects citizens, volunteers, NGOs, and veterinarians to report, rescue, treat, and rehome injured or abandoned animals — all in real time.
 
 <br/>
 
-[🚀 Getting Started](#-getting-started) · [✨ Features](#-features) · [🏗️ Architecture](#️-architecture) · [📸 Screenshots](#-screenshots) · [🤝 Contributing](#-contributing)
+[🚀 Quick Start](#-quick-start) · [✨ Features](#-features) · [🏗️ Architecture](#%EF%B8%8F-architecture) · [🛠️ Tech Stack](#%EF%B8%8F-tech-stack) · [🤝 Contributing](#-contributing)
 
 ---
 
 </div>
 
-<br/>
+## 🌟 The Problem We Solve
 
-## 📋 Table of Contents
+India has over **35 million** stray animals. When a citizen spots an injured animal, there's no fast, reliable way to coordinate a rescue. Calls go unanswered, NGOs are overwhelmed, and animals suffer.
 
-- [🌟 Overview](#-overview)
-- [✨ Features](#-features)
-- [🛠️ Tech Stack](#️-tech-stack)
-- [🏗️ Architecture](#️-architecture)
-- [📂 Project Structure](#-project-structure)
-- [🚀 Getting Started](#-getting-started)
-- [⚙️ Environment Variables](#️-environment-variables)
-- [🔐 Security](#-security)
-- [🌐 Internationalization](#-internationalization)
-- [🗺️ Roadmap](#️-roadmap)
-- [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
-- [💬 Contact](#-contact)
-
----
-
-## 🌟 Overview
-
-India has over **35 million** stray animals, yet there is no unified digital platform to coordinate their rescue. **REScue Paw** bridges this critical gap by providing an end-to-end ecosystem:
+**REScue Paw** changes that with a single, AI-driven pipeline:
 
 ```
-Citizen Reports ──► AI Analysis ──► Volunteer Dispatch ──► Vet Treatment ──► Adoption
+📷 Citizen Reports ──► 🤖 AI Analysis ──► 🦸 Volunteer Dispatch ──► 🏥 Vet Treatment ──► 🏠 Adoption
 ```
 
-The platform uses **Google Gemini AI** for real-time image analysis of animal injuries, automated severity assessment, breed detection, and document verification — reducing response time from hours to **minutes**.
-
-### 🎯 Key Objectives
-
-| Goal | How REScue Paw Achieves It |
-|------|---------------------------|
-| ⚡ **Rapid Response** | AI-powered triage + automatic dispatch to nearest volunteers |
-| 🧠 **Smart Analysis** | Gemini AI identifies animal type, breed, injuries & severity from a single photo |
-| 🔄 **Full Lifecycle** | Report → Rescue → Treat → Adopt — tracked end-to-end |
-| 🍲 **Food Network** | Citizens donate food; volunteers & NGOs claim and distribute it |
-| 🏠 **Adoption Pipeline** | Rescued animals are listed for adoption with AI-verified document checks |
-| 🛒 **Pet Shop** | Buy food & supplies for animals with integrated Razorpay payments |
-| 🌍 **Bilingual** | Full English + Hindi support across the entire platform |
+> **Result:** Response time drops from **hours to minutes**. Every report is analyzed, triaged, and dispatched automatically.
 
 ---
 
 ## ✨ Features
 
-### 🚨 Emergency Reporting System
-- 📷 **Photo-based reporting** with camera capture or file upload
-- 🤖 **AI Image Analysis** powered by Google Gemini:
-  - Authenticity detection (real vs AI-generated images)
-  - Animal presence verification
-  - Species & breed identification (Dog, Cat, Cow, Other)
-  - Injury classification & severity scoring (Critical/High/Medium/Low)
-  - First-aid advice generation
-- 📍 **GPS auto-location** with manual override
-- 📡 **Real-time broadcasting** to nearby responders
+### 🚨 Emergency Reporting with AI Triage
 
-### 🖥️ Role-Based Dashboard
-Four distinct user roles with tailored experiences:
+| Capability | Description |
+|-----------|-------------|
+| 📷 Photo Capture | Camera or file upload for incident evidence |
+| 🧠 Gemini AI Analysis | Detects animal type, breed, injury severity, and image authenticity |
+| 📍 Auto GPS Location | Pinpoints the exact location with manual override |
+| 📡 Instant Broadcast | Notifies nearest volunteers and NGOs in real time |
+| 🩹 First-Aid Advice | AI generates immediate care instructions while help arrives |
 
-| Role | Capabilities |
-|------|-------------|
-| 🙋 **Citizen** | Report emergencies, track case status, donate food, adopt pets, shop |
-| 🦸 **Volunteer** | Accept/decline cases, mark rescued, coordinate food bank pickups |
-| 🏢 **NGO** | Manage incoming cases, coordinate rescues, list animals for adoption |
-| 🏥 **Vet** | Update medical status, upload recovery photos, complete treatments |
+### 🖥️ Role-Based Experience
 
-### 📊 Live Case Tracking
-- Kanban-style case board: **Incoming → In Progress → Rescued → Recovered**
-- Real-time status timeline with author-attributed updates
+<table>
+<tr>
+<td align="center" width="25%">
+
+**🙋 Citizen**
+
+Report emergencies, track cases, donate food, adopt pets, shop for supplies
+
+</td>
+<td align="center" width="25%">
+
+**🦸 Volunteer**
+
+Accept cases, coordinate rescues, manage food bank pickups
+
+</td>
+<td align="center" width="25%">
+
+**🏢 NGO**
+
+Manage case pipeline, list animals for adoption, oversee operations
+
+</td>
+<td align="center" width="25%">
+
+**🏥 Vet**
+
+Update medical status, upload recovery photos, mark treatments complete
+
+</td>
+</tr>
+</table>
+
+### 📊 Live Case Board
+
+- **Kanban workflow:** Incoming → In Progress → Rescued → Recovered
+- Real-time timeline with author-attributed status updates
 - Before/after recovery photo comparison
-- Decline & re-queue system for capacity management
+- Smart decline & re-queue when responders are at capacity
 
-### 🐕 Pet Adoption
-- Browse rescued animals available for adoption
-- **AI-powered document verification** for adoption applications:
+### 🐕 Pet Adoption Pipeline
+
+- Browse rescued animals ready for adoption
+- **AI-powered document verification:**
   - Government ID validation
-  - Address proof verification
-  - Landlord NOC check (for renters)
-- Multi-step application flow: Eligibility → Housing → Documents → Review
+  - Address proof check
+  - Landlord NOC verification (for renters)
+- Guided application: Eligibility → Housing → Documents → Review
 
-### 🍲 Food Donation & Bank
-- AI food analysis for safety:
-  - Food type & suitability detection (safe for dogs/cats/cows)
-  - Spoilage/expiry detection
-  - Quantity estimation
-- Two delivery options: **Schedule Pickup** or **Drop-off at NGO**
-- NGOs and volunteers can browse and claim available donations
+### 🍲 Food Donation Network
 
-### 🛒 Pet Shop
-- Browse pet food and supplies
-- Category filtering (Food / Stuffs / All)
-- **Razorpay payment integration** (Online + Cash on Delivery)
-- Full checkout flow with order confirmation
-- Webhook-based payment verification
+- **AI food safety analysis** — detects food type, spoilage risk, and animal suitability
+- Two delivery options: **Schedule Pickup** or **Drop off at NGO**
+- NGOs & volunteers browse and claim available donations
 
-### 💬 AI Medical Guide (Chat Assistant)
-- Emergency first-aid chatbot powered by Gemini AI
-- Context-aware responses for animal medical emergencies
-- Privacy-respecting with optional chat history saving
+### 🛒 Pet Shop with Payments
 
-### 👤 User Profile & Privacy
-- Avatar upload & profile management
-- **Privacy controls**:
-  - Private Mode (no local storage of new data)
-  - Chat history toggle
-  - Data usage consent management
-  - Complete data erasure with confirmation
-- Account deletion with safety confirmation
+- Browse food & supplies with category filters
+- **Razorpay integration** — Online payments + Cash on Delivery
+- Full checkout → order confirmation → webhook-verified payments
 
-### 🔐 Authentication
-- **Firebase Authentication** with Google Sign-In
-- **OTP-based email authentication** via Resend
-- Demo accounts for testing (Citizen, Volunteer, NGO, Vet)
-- Beautiful split-screen auth layout with storytelling side panel
+### 💬 AI Medical Guide
 
----
+- Floating chat assistant powered by Gemini AI
+- Context-aware emergency first-aid responses
+- Optional chat history with privacy toggle
 
-## 🛠️ Tech Stack
+### 🔐 Auth & Privacy
 
-### Frontend
-
-| Technology | Purpose |
-|-----------|---------|
-| **React 19** | UI Framework with latest features |
-| **TypeScript 5.8** | Type-safe development |
-| **React Router 7** | Client-side routing (HashRouter) |
-| **Lucide React** | Beautiful icon library |
-| **Vite 7** | Lightning-fast build tool & dev server |
-
-### Backend
-
-| Technology | Purpose |
-|-----------|---------|
-| **Express 5** | REST API server |
-| **Firebase Admin SDK** | Server-side auth & Firestore operations |
-| **Google Gemini AI** | Image analysis, chat, food analysis, doc verification |
-| **Razorpay** | Payment processing |
-| **Resend** | OTP email delivery |
-| **TSX** | TypeScript execution for server |
-
-### Cloud & Services
-
-| Technology | Purpose |
-|-----------|---------|
-| **Firebase Auth** | User authentication (Google + Custom OTP) |
-| **Cloud Firestore** | User profiles, orders, OTPs |
-| **Firebase Hosting** | Web app deployment |
-| **Firebase Data Connect** | Data layer integration |
+- **Firebase Auth** — Google Sign-In + OTP email login (via Resend)
+- Private Mode, data consent controls, full data erasure
+- Demo accounts included for instant testing
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         CLIENT (React SPA)                      │
-│                                                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐   │
-│  │  Screens │  │Components│  │ Contexts │  │   Services   │   │
-│  │ 16 pages │  │  4 comps │  │ Language │  │ Firebase SDK │   │
-│  │          │  │          │  │  i18n    │  │  Gemini AI   │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────────┘   │
-│                                                                 │
-└────────────────────────┬────────────────────────────────────────┘
-                         │ HTTP / Firebase SDK
-┌────────────────────────┴────────────────────────────────────────┐
-│                       SERVER (Express + TSX)                     │
-│                                                                 │
-│  ┌──────────────┐  ┌─────────────┐  ┌──────────────────────┐   │
-│  │  Auth APIs   │  │  Shop APIs  │  │    Vite Middleware    │   │
-│  │  Send OTP    │  │  Checkout   │  │   (Dev HMR Server)   │   │
-│  │  Verify OTP  │  │  Webhook    │  │                      │   │
-│  │              │  │  COD Flow   │  │                      │   │
-│  └──────────────┘  └─────────────┘  └──────────────────────┘   │
-│                                                                 │
-└────────────────────────┬────────────────────────────────────────┘
-                         │
-┌────────────────────────┴────────────────────────────────────────┐
-│                     CLOUD SERVICES                              │
-│                                                                 │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐   │
-│  │ Firebase │  │  Cloud   │  │  Gemini  │  │   Razorpay   │   │
-│  │   Auth   │  │Firestore │  │    AI    │  │   Payments   │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────────┘   │
-│                                                                 │
-│  ┌──────────┐  ┌──────────────────────────────────────────┐    │
-│  │  Resend  │  │         Firebase Hosting                 │    │
-│  │  Emails  │  │                                          │    │
-│  └──────────┘  └──────────────────────────────────────────┘    │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                    CLIENT  (React SPA)                    │
+│                                                          │
+│   Screens (16)  ·  Components (4)  ·  Contexts  ·  Services
+│                                                          │
+└──────────────────────────┬───────────────────────────────┘
+                           │  HTTP + Firebase SDK
+┌──────────────────────────┴───────────────────────────────┐
+│                   SERVER  (Express + TSX)                 │
+│                                                          │
+│   Auth APIs         Shop APIs         Vite Dev Server    │
+│   (Send/Verify OTP) (Checkout/COD/    (HMR Middleware)   │
+│                      Webhook)                            │
+└──────────────────────────┬───────────────────────────────┘
+                           │
+┌──────────────────────────┴───────────────────────────────┐
+│                     CLOUD SERVICES                        │
+│                                                          │
+│   Firebase Auth  ·  Cloud Firestore  ·  Firebase Hosting │
+│   Gemini AI      ·  Razorpay         ·  Resend Email     │
+│   Firebase Data Connect                                  │
+└──────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🛠️ Tech Stack
+
+<table>
+<tr><th align="left" width="120">Layer</th><th align="left">Technologies</th></tr>
+<tr>
+<td><strong>Frontend</strong></td>
+<td>React 19 · TypeScript 5.8 · React Router 7 · Lucide Icons · Vite 7</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>Express 5 · Firebase Admin SDK · TSX Runtime · Crypto (HMAC verification)</td>
+</tr>
+<tr>
+<td><strong>AI</strong></td>
+<td>Google Gemini AI — image analysis, chat, food analysis, document verification</td>
+</tr>
+<tr>
+<td><strong>Cloud</strong></td>
+<td>Firebase Auth · Cloud Firestore · Firebase Hosting · Firebase Data Connect</td>
+</tr>
+<tr>
+<td><strong>Payments</strong></td>
+<td>Razorpay (orders + webhooks + COD)</td>
+</tr>
+<tr>
+<td><strong>Email</strong></td>
+<td>Resend (OTP delivery)</td>
+</tr>
+<tr>
+<td><strong>i18n</strong></td>
+<td>Custom React Context — English + Hindi (200+ translation keys)</td>
+</tr>
+</table>
 
 ---
 
 ## 📂 Project Structure
 
 ```
-REScue Paw/
+📦 REScue Paw
+├── index.html                 # Entry point
+├── index.tsx                  # React bootstrap
+├── App.tsx                    # Routing, auth, global state
+├── types.ts                   # All TypeScript interfaces & enums
+├── server.ts                  # Express API (auth, shop, payments)
+├── vite.config.ts             # Build config
+├── firebase.json              # Firebase project config
+├── firestore.rules            # Security rules
 │
-├── 📄 index.html              # Entry point HTML
-├── 📄 index.tsx               # React app bootstrap
-├── 📄 App.tsx                 # Main app with routing, auth, state management
-├── 📄 types.ts                # TypeScript interfaces & enums
-├── 📄 server.ts               # Express backend (OTP auth, shop APIs, Razorpay)
-├── 📄 vite.config.ts          # Vite build configuration
-├── 📄 tsconfig.json           # TypeScript configuration
-├── 📄 firebase.json           # Firebase project config
-├── 📄 firestore.rules         # Firestore security rules
+├── 📁 screens/                # 16 page components
+│   ├── HomeScreen             #   Mission control dashboard
+│   ├── ReportScreen           #   AI-powered emergency report
+│   ├── DashboardScreen        #   Case board (NGO/Vol/Vet)
+│   ├── StatusScreen           #   Case tracking timeline
+│   ├── LoginScreen            #   OTP + demo login
+│   ├── RegisterScreen         #   Role-based registration
+│   ├── SplashScreen           #   Animated loading
+│   ├── IntroStoryScreen       #   Onboarding experience
+│   ├── ProfileScreen          #   Settings, privacy, about
+│   ├── DonationScreen         #   Food donation + AI check
+│   ├── FoodDonationsScreen    #   Browse & claim donations
+│   ├── AdoptionScreen         #   Browse adoptable pets
+│   ├── AdoptionFormScreen     #   Multi-step adopt application
+│   ├── ShopScreen             #   Pet food & supplies
+│   ├── CheckoutScreen         #   Razorpay checkout
+│   └── OrderConfirmationScreen#   Order success
 │
-├── 📁 screens/                # Page-level React components
-│   ├── HomeScreen.tsx         # Mission control dashboard
-│   ├── ReportScreen.tsx       # AI-powered emergency reporting
-│   ├── DashboardScreen.tsx    # Case management board (NGO/Volunteer/Vet)
-│   ├── StatusScreen.tsx       # Case tracking timeline
-│   ├── LoginScreen.tsx        # Email/OTP + demo login
-│   ├── RegisterScreen.tsx     # User registration with role selection
-│   ├── SplashScreen.tsx       # Animated app loading screen
-│   ├── IntroStoryScreen.tsx   # Onboarding story experience
-│   ├── ProfileScreen.tsx      # User profile, settings, privacy, about
-│   ├── DonationScreen.tsx     # Food donation with AI analysis
-│   ├── FoodDonationsScreen.tsx# Food bank browsing & claiming
-│   ├── AdoptionScreen.tsx     # Browse adoptable pets
-│   ├── AdoptionFormScreen.tsx # Multi-step adoption application
-│   ├── ShopScreen.tsx         # Pet food & supplies store
-│   ├── CheckoutScreen.tsx     # Razorpay checkout flow
-│   └── OrderConfirmationScreen.tsx # Order success page
+├── 📁 components/             # Shared UI
+│   ├── ChatAssistant          #   Floating AI guide
+│   ├── AuthSidePanel          #   Login storytelling panel
+│   ├── ScrollyTyping          #   Scroll-triggered animation
+│   └── Typewriter             #   Typing text effect
 │
-├── 📁 components/             # Reusable UI components
-│   ├── ChatAssistant.tsx      # AI medical guide floating widget
-│   ├── AuthSidePanel.tsx      # Login page storytelling panel
-│   ├── ScrollyTyping.tsx      # Scroll-triggered typing animation
-│   └── Typewriter.tsx         # Typewriter text effect
+├── 📁 contexts/
+│   └── LanguageContext        #   i18n provider (EN / HI)
 │
-├── 📁 contexts/               # React Context providers
-│   └── LanguageContext.tsx    # i18n with English + Hindi translations
-│
-├── 📁 services/               # External service integrations
-│   ├── firebase.ts            # Firebase client SDK initialization
-│   └── gemini.ts              # Google Gemini AI service layer
-│
-├── 📁 src/                    # Generated SDK code
-│   ├── dataconnect-generated/ # Firebase Data Connect client SDK
-│   └── dataconnect-admin-generated/ # Data Connect admin SDK
+├── 📁 services/
+│   ├── firebase               #   Firebase client SDK init
+│   └── gemini                 #   Gemini AI service layer
 │
 └── 📁 dataconnect/            # Firebase Data Connect schemas
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-| Requirement | Version |
-|------------|---------|
-| **Node.js** | ≥ 18.x |
-| **npm** | ≥ 9.x |
-| **Firebase CLI** | Latest |
-| **Google Cloud Account** | For Gemini AI API key |
+- **Node.js** ≥ 18 &nbsp;·&nbsp; **npm** ≥ 9 &nbsp;·&nbsp; **Firebase CLI** (latest)
 
-### Installation
-
-**1. Clone the repository**
+### 1 — Clone & Install
 
 ```bash
 git clone https://github.com/jitendrachoudhary1401-hue/REScuePaw.git
 cd REScuePaw
-```
-
-**2. Install dependencies**
-
-```bash
 npm install
 ```
 
-**3. Set up environment variables**
+### 2 — Configure Environment
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and fill in your credentials (see [Environment Variables](#️-environment-variables) below).
+Fill in your keys (see [Environment Variables](#%EF%B8%8F-environment-variables) below).
 
-**4. Start the development server**
+### 3 — Run
 
 ```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:3000` 🎉
+Open **http://localhost:3000** 🎉
 
-### Demo Accounts
+### 🧪 Demo Accounts
 
-For quick testing without Firebase setup, the app includes built-in demo accounts:
+No Firebase setup needed — use these built-in test accounts:
 
 | Role | Email | Password |
 |------|-------|----------|
@@ -331,14 +285,12 @@ For quick testing without Firebase setup, the app includes built-in demo account
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file in the root directory:
-
 ```env
-# ─── AI Services ───────────────────────────────────
+# ─── AI ──────────────────────────────────────────
 API_KEY=your_gemini_api_key
 GEMINI_API_KEY=your_gemini_api_key
 
-# ─── Firebase Client Config ───────────────────────
+# ─── Firebase (Client) ──────────────────────────
 VITE_FIREBASE_API_KEY=your_firebase_api_key
 VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
 VITE_FIREBASE_PROJECT_ID=your_project_id
@@ -347,101 +299,88 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
-# ─── Server-Side (Optional) ──────────────────────
-RESEND_API_KEY=your_resend_api_key
-FIREBASE_SERVICE_ACCOUNT_BASE64=base64_encoded_service_account_json
+# ─── Server (Optional) ──────────────────────────
+RESEND_API_KEY=your_resend_key
+FIREBASE_SERVICE_ACCOUNT_BASE64=base64_encoded_json
 
-# ─── Payments (Optional) ─────────────────────────
-RAZORPAY_KEY_ID=your_razorpay_key_id
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+# ─── Payments (Optional) ────────────────────────
+RAZORPAY_KEY_ID=your_key_id
+RAZORPAY_KEY_SECRET=your_key_secret
 RAZORPAY_WEBHOOK_SECRET=your_webhook_secret
 ```
 
-> **Note**: The app works in **DEV mode** without Resend or Razorpay keys — OTPs are logged to console and payments use test mode.
+> **💡 Tip:** The app runs fine in DEV mode without Resend or Razorpay keys. OTPs are logged to the console, and payments use test mode.
 
 ---
 
 ## 🔐 Security
 
-### Firestore Security Rules
+**Firestore Rules**
+- ✅ All reads require authentication
+- ✅ Users can only modify their own profiles
+- ✅ Required fields enforced at the database level
+- ✅ `uid` and `email` are immutable after creation
+- ✅ Only admins can delete accounts
+- ✅ OTP documents secured with server secrets
 
-The project includes comprehensive Firestore security rules:
-
-- ✅ **Authentication-gated access** — All reads require auth
-- ✅ **Owner-only writes** — Users can only modify their own profiles
-- ✅ **Field validation** — Required fields are enforced at the database level
-- ✅ **Immutable fields** — `uid` and `email` cannot be changed after creation
-- ✅ **Admin-only deletes** — Only admins can delete user accounts
-- ✅ **Server-only OTP access** — OTP documents secured with server secrets
-
-### Client-Side Privacy
-
-- 🔒 **Private Mode** — Prevents local storage of sensitive data
-- 🗑️ **Full data erasure** — Users can permanently delete all local data
-- 📝 **Consent management** — Opt-in/opt-out for anonymized data usage
+**Client-Side Privacy**
+- 🔒 Private Mode — prevents local storage of new data
+- 🗑️ Full data erasure with typed confirmation
+- 📝 Granular consent for anonymized data usage
 
 ---
 
 ## 🌐 Internationalization
 
-REScue Paw supports **bilingual operation** with full English and Hindi translations:
+| Language | Coverage |
+|----------|----------|
+| 🇬🇧 English | Default — full coverage |
+| 🇮🇳 हिन्दी (Hindi) | Complete — 200+ translated keys |
 
-- 🇬🇧 **English** — Default language
-- 🇮🇳 **हिन्दी (Hindi)** — Complete translation of all UI strings
-
-Language preference is persisted in local storage and can be changed from **Profile → Settings**.
-
-The translation system supports **200+ keys** covering:
-- Navigation & menus
-- Emergency reporting flows
-- Dashboard & case management
-- Adoption process
-- Donation system
-- Profile & privacy settings
-- Chat assistant
-- Error messages & confirmations
+Switch languages anytime from **Profile → Settings**. Preference is persisted locally.
 
 ---
 
 ## 🗺️ Roadmap
 
-- [ ] 📱 React Native mobile app
-- [ ] 🗺️ Real-time map with live rescue markers
-- [ ] 🔔 Push notifications for nearby incidents
-- [ ] 📊 Analytics dashboard for NGOs
-- [ ] 🏥 Vet appointment scheduling
-- [ ] 💳 Recurring donation support
-- [ ] 🐾 Post-adoption follow-up system
-- [ ] 🌍 Multi-language expansion (Tamil, Bengali, Marathi)
-- [ ] 📸 AI-powered recovery progress tracking
-- [ ] 🤝 NGO verification & trust score system
+| Status | Feature |
+|--------|---------|
+| 🔲 | 📱 React Native mobile app |
+| 🔲 | 🗺️ Live map with real-time rescue markers |
+| 🔲 | 🔔 Push notifications for nearby incidents |
+| 🔲 | 📊 Analytics dashboard for NGOs |
+| 🔲 | 🏥 Vet appointment scheduling |
+| 🔲 | 💳 Recurring donation support |
+| 🔲 | 🐾 Post-adoption follow-up system |
+| 🔲 | 🌍 More languages — Tamil, Bengali, Marathi |
+| 🔲 | 📸 AI-powered recovery progress tracking |
+| 🔲 | 🤝 NGO verification & trust scores |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions make the open-source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are welcome! Here's how:
 
-1. **Fork** the repository
-2. **Create** your feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add some amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
+1. **Fork** this repository
+2. **Create** a feature branch — `git checkout -b feature/your-feature`
+3. **Commit** your changes — `git commit -m 'Add your feature'`
+4. **Push** — `git push origin feature/your-feature`
 5. **Open** a Pull Request
 
 ---
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source under the [MIT License](LICENSE).
 
 ---
 
 ## 💬 Contact
 
-**Jitendra Choudhary** — Project Creator & Maintainer
+**Jitendra Choudhary** — Creator & Maintainer
 
-- 📧 Email: [jitendrachoudhary1401@gmail.com](mailto:jitendrachoudhary1401@gmail.com)
-- 🐙 GitHub: [@jitendrachoudhary1401-hue](https://github.com/jitendrachoudhary1401-hue)
+📧 [jitendrachoudhary1401@gmail.com](mailto:jitendrachoudhary1401@gmail.com) &nbsp;·&nbsp; 🐙 [@jitendrachoudhary1401-hue](https://github.com/jitendrachoudhary1401-hue)
 
 ---
 
@@ -459,4 +398,3 @@ This project is open source and available under the [MIT License](LICENSE).
 ⭐ **Star this repo if you believe in the mission!** ⭐
 
 </div>
-]]>
