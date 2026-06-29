@@ -43,6 +43,8 @@ export interface AiAnalysis {
 
 export interface FoodAnalysis {
   foodType: string;
+  specificFoodDetected?: string[];
+  isSpoiledOrExpired?: boolean;
   estimatedQuantity: string;
   suitability: {
     dog: boolean;
@@ -86,6 +88,7 @@ export interface User {
   email: string;
   role: UserRole;
   organization?: string;
+  isVerifiedProfessional?: boolean; // True if they uploaded a valid Vet/NGO certificate
   phone?: string;
   avatar?: string; // base64
   password?: string; // Optional for updates
@@ -165,4 +168,69 @@ export interface DocVerificationResult {
   reason: string;
   documentTypeDetected: string;
   imageQuality?: 'Low' | 'Medium' | 'High';
+}
+
+export enum ShopCategory {
+  FOOD = 'FOOD',
+  STUFFS = 'STUFFS'
+}
+
+export interface ShopItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  category: ShopCategory;
+  stock?: number;
+}
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  CANCELLED = 'CANCELLED'
+}
+
+export enum PaymentMethod {
+  COD = 'COD',
+  ONLINE = 'ONLINE'
+}
+
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED'
+}
+
+export interface ShippingAddress {
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+export interface OrderItem {
+  shopItemId: string;
+  name: string;
+  quantity: number;
+  priceAtPurchase: number;
+  image: string;
+}
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: OrderItem[];
+  status: OrderStatus;
+  totalAmount: number;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  paymentId?: string; // e.g., Razorpay Order ID or Payment ID
+  shippingAddress: ShippingAddress;
+  createdAt: number;
 }

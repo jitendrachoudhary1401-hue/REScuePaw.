@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useNavigate, Link, Navigate, useLocation } from 'react-router-dom';
-import { Home, PlusCircle, LayoutDashboard, MessageCircle, PawPrint, ShieldCheck, User as UserIcon, LogOut, UserCircle, Bone, Soup, Heart } from 'lucide-react';
+import { Home, PlusCircle, LayoutDashboard, MessageCircle, PawPrint, ShieldCheck, User as UserIcon, LogOut, UserCircle, Bone, Soup, Heart, ShoppingBag } from 'lucide-react';
 import HomeScreen from './screens/HomeScreen';
 import ReportScreen from './screens/ReportScreen';
 import DashboardScreen from './screens/DashboardScreen';
@@ -16,8 +16,11 @@ import FoodDonationsScreen from './screens/FoodDonationsScreen';
 import AdoptionScreen from './screens/AdoptionScreen';
 import AdoptionFormScreen from './screens/AdoptionFormScreen';
 import IntroStoryScreen from './screens/IntroStoryScreen';
+import ShopScreen from './screens/ShopScreen';
+import CheckoutScreen from './screens/CheckoutScreen';
+import OrderConfirmationScreen from './screens/OrderConfirmationScreen';
 import AuthSidePanel from './components/AuthSidePanel'; // Import Side Panel
-import { UserRole, EmergencyReport, User, ReportUpdate, ReportStatus, Donation, DonationStatus, AdoptionPet, AnimalType } from './types';
+import { UserRole, EmergencyReport, User, ReportUpdate, ReportStatus, Donation, DonationStatus, AdoptionPet, AnimalType, ShopItem, ShopCategory } from './types';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 
 // Firebase Imports
@@ -30,6 +33,7 @@ const AppContent: React.FC = () => {
   const [reports, setReports] = useState<EmergencyReport[]>([]);
   const [donations, setDonations] = useState<Donation[]>([]);
   const [pets, setPets] = useState<AdoptionPet[]>([]); 
+  const [shopItems, setShopItems] = useState<ShopItem[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [showIntro, setShowIntro] = useState(true); // State for Intro Screen
@@ -113,6 +117,20 @@ const AppContent: React.FC = () => {
       ];
       setPets(demoPets);
       localStorage.setItem('rescue_paw_pets', JSON.stringify(demoPets));
+    }
+    
+    const savedShopItems = localStorage.getItem('rescue_paw_shop_items');
+    if (savedShopItems) {
+      setShopItems(JSON.parse(savedShopItems));
+    } else {
+      const demoShopItems: ShopItem[] = [
+        { id: 'shop_1', name: 'Premium Dog Food', price: 1500, image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=800&q=80', description: 'High quality dry food for adult dogs.', category: ShopCategory.FOOD },
+        { id: 'shop_2', name: 'Catnip Toy', price: 250, image: 'https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=800&q=80', description: 'Interactive toy with organic catnip.', category: ShopCategory.STUFFS },
+        { id: 'shop_3', name: 'Puppy Training Pads', price: 400, image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&q=80', description: 'Absorbent training pads for puppies.', category: ShopCategory.STUFFS },
+        { id: 'shop_4', name: 'Canned Tuna for Cats', price: 150, image: 'https://images.unsplash.com/photo-1583337260546-28b61e27a922?w=800&q=80', description: 'Delicious wet food for cats.', category: ShopCategory.FOOD },
+      ];
+      setShopItems(demoShopItems);
+      localStorage.setItem('rescue_paw_shop_items', JSON.stringify(demoShopItems));
     }
     
     setIsInitialized(true);
@@ -380,6 +398,7 @@ const AppContent: React.FC = () => {
                 )}
                 
                 <SidebarLink to="/adoption" icon={Heart} label={t('adoption')} />
+                <SidebarLink to="/shop" icon={ShoppingBag} label={t('shop')} />
 
                 <SidebarLink to="/profile" icon={UserCircle} label={t('profile')} />
               </nav>
@@ -447,6 +466,9 @@ const AppContent: React.FC = () => {
                       element={<AdoptionScreen pets={pets} currentUser={currentUser} reports={reports} onListForAdoption={listForAdoption} />} 
                     />
                     <Route path="/adoption/apply/:petId" element={<AdoptionFormScreen currentUser={currentUser} pets={pets} onAdopt={adoptPet} />} />
+                    <Route path="/shop" element={<ShopScreen items={shopItems} />} />
+                    <Route path="/checkout/:itemId" element={<CheckoutScreen items={shopItems} currentUser={currentUser} />} />
+                    <Route path="/order-confirmation/:orderId" element={<OrderConfirmationScreen />} />
                     <Route path="*" element={<Navigate to="/" replace />} />
                   </Routes>
                 </div>
@@ -461,6 +483,10 @@ const AppContent: React.FC = () => {
                 <Link to="/adoption" className="flex flex-col items-center gap-1 text-gray-600 hover:text-emerald-500 active:text-emerald-600">
                   <Heart className="w-6 h-6" />
                   <span className="text-[10px] font-medium uppercase tracking-wider">{t('adoption')}</span>
+                </Link>
+                <Link to="/shop" className="flex flex-col items-center gap-1 text-gray-600 hover:text-emerald-500 active:text-emerald-600">
+                  <ShoppingBag className="w-6 h-6" />
+                  <span className="text-[10px] font-medium uppercase tracking-wider">{t('shop')}</span>
                 </Link>
                 <Link to="/report" className="flex flex-col items-center -mt-8">
                   <div className="w-14 h-14 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-200 border-4 border-white transform transition-transform active:scale-95 hover:scale-105 hover:shadow-emerald-300">

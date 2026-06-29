@@ -65,7 +65,7 @@ export const analyzeInjury = async (imageB64: string): Promise<AiAnalysis> => {
     const base64Data = imageB64.includes(',') ? imageB64.split(',')[1] : imageB64;
 
     const response = await ai.models.generateContent({
-      model: REASONING_MODEL,
+      model: FAST_MODEL,
       contents: {
         parts: [
           { inlineData: { data: base64Data, mimeType: 'image/jpeg' } },
@@ -73,7 +73,6 @@ export const analyzeInjury = async (imageB64: string): Promise<AiAnalysis> => {
         ]
       },
       config: {
-        thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
         systemInstruction: `You are an AI Assistant specialized in identifying street animals and categorizing visible issues for emergency reporting.
         
         IMPORTANT: You are NOT a veterinarian. DO NOT provide a medical diagnosis or internal medical assessment. Focus ONLY on what is visually apparent.
@@ -147,15 +146,19 @@ export const analyzeFoodDonation = async (imageB64: string): Promise<FoodAnalysi
         systemInstruction: `You are a Veterinary Nutritionist AI.
         
         Tasks:
-        1. Identify the food item(s) and estimate quantity (e.g., "2 kg", "5 packets").
-        2. **TOXICITY CHECK**: Strictly check for items toxic to animals (Chocolate, Onions, Grapes, Xylitol, Cooked Bones).
-        3. Determine suitability for Dogs, Cats, and Cows.
-        4. If toxic, mark suitability as false and warn in comments.`,
+        1. Identify the general food category (foodType) AND specific food items present (specificFoodDetected).
+        2. Estimate the quantity (e.g., "2 kg", "5 packets").
+        3. STRICTLY check the image for expiration dates, mold, insect presence, or signs of spoilage. Set isSpoiledOrExpired appropriately.
+        4. TOXICITY CHECK: Strictly check for items toxic to animals (Chocolate, Onions, Grapes, Xylitol, Cooked Bones).
+        5. Determine suitability for Dogs, Cats, and Cows.
+        6. If toxic or spoiled, mark suitability as false and warn clearly in comments (e.g. 'DO NOT CONSUME - SPOILED/TOXIC').`,
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
             foodType: { type: Type.STRING },
+            specificFoodDetected: { type: Type.ARRAY, items: { type: Type.STRING } },
+            isSpoiledOrExpired: { type: Type.BOOLEAN },
             estimatedQuantity: { type: Type.STRING },
             suitability: {
               type: Type.OBJECT,
@@ -169,7 +172,7 @@ export const analyzeFoodDonation = async (imageB64: string): Promise<FoodAnalysi
             comments: { type: Type.STRING },
             imageQuality: { type: Type.STRING, enum: ['Low', 'Medium', 'High'] }
           },
-          required: ['foodType', 'estimatedQuantity', 'suitability', 'comments']
+          required: ['foodType', 'specificFoodDetected', 'isSpoiledOrExpired', 'estimatedQuantity', 'suitability', 'comments']
         }
       }
     });
@@ -355,5 +358,58 @@ export const checkIsSameAnimal = async (image1B64: string, image2B64: string): P
     });
     const result = JSON.parse(response.text || '{}');
     return result.isSameAnimal === true;
+  }, fallback);
+};
+
+/**
+ * Verifies professional documents (Vet License, NGO Certificate).
+ * Uses OCR capabilities of Gemini.
+ */
+export const verifyProfessionalDoc = async (imageB64: string, role: 'VET' | 'NGO'): Promise<DocVerificationResult> => {
+  const fallback: DocVerificationResult = {
+      isValid: true,
+      reason: "Manual verification required (Offline Mode).",
+      documentTypeDetected: "Unknown",
+      imageQuality: 'Medium'
+  };
+
+  return handleApiCall(async () => {
+    const base64Data = imageB64.includes(',') ? imageB64.split(',')[1] : imageB64;
+    
+    const docPrompt = 
+      role === 'VET' ? "Veterinary Medical License or Registration Certificate" :
+      "NGO Registration Certificate or Non-Profit Organization Charter";
+
+    const response = await ai.models.generateContent({
+      model: REASONING_MODEL,
+      contents: {
+        parts: [
+          { inlineData: { data: base64Data, mimeType: 'image/jpeg' } },
+          { text: `Verify this document. It should be a ${docPrompt}.` }
+        ]
+      },
+      config: {
+        thinkingConfig: { thinkingLevel: ThinkingLevel.HIGH },
+        systemInstruction: `You are a Professional Document Verification AI.
+        1. **Check Legibility**: Can text be read?
+        2. **Classify**: Is it the correct document type requested?
+        3. **Analyze**: Does it look authentic?
+        
+        Output JSON.`,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            isValid: { type: Type.BOOLEAN },
+            reason: { type: Type.STRING },
+            documentTypeDetected: { type: Type.STRING },
+            imageQuality: { type: Type.STRING, enum: ['Low', 'Medium', 'High'] }
+          },
+          required: ['isValid', 'reason', 'documentTypeDetected', 'imageQuality']
+        }
+      }
+    });
+    
+    return JSON.parse(response.text || '{}');
   }, fallback);
 };

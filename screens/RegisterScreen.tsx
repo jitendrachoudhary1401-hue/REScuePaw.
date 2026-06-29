@@ -6,6 +6,7 @@ import { User, UserRole } from '../types';
 import { signInWithCustomToken } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
+import { verifyProfessionalDoc } from '../services/gemini';
 
 interface RegisterScreenProps {
   onRegister: (user: User) => void;
@@ -20,13 +21,53 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
   const [phone, setPhone] = useState('');
   const [org, setOrg] = useState('');
   const [otp, setOtp] = useState('');
+  const [certificateB64, setCertificateB64] = useState<string>('');
+  const [isVerifiedProfessional, setIsVerifiedProfessional] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image must be less than 5MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setCertificateB64(reader.result as string);
+        setError('');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+
+    if ((role === 'NGO' || role === 'VET')) {
+      if (!certificateB64) {
+        setError('Please upload your professional certificate or license.');
+        setLoading(false);
+        return;
+      }
+      try {
+        const verification = await verifyProfessionalDoc(certificateB64, role);
+        if (!verification.isValid) {
+          setError(`Document Verification Failed: ${verification.reason}`);
+          setLoading(false);
+          return;
+        }
+        setIsVerifiedProfessional(true);
+      } catch (err) {
+        console.error("Verification Error:", err);
+        setError('Failed to verify document. Please try again.');
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       const response = await fetch('/api/auth/send-otp', {
@@ -78,28 +119,47 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
         throw new Error('Server returned an invalid response. Please try again later.');
       }
 
-      if (response.ok && data.success && data.customToken) {
-        const userCredential = await signInWithCustomToken(auth, data.customToken);
-        const firebaseUser = userCredential.user;
-
-        // Prepare User Data object
+      if (response.ok && data.success) {
+        const mockUid = `dev_${email.split('@')[0]}`;
         const newUser: User = {
-          id: firebaseUser.uid,
-          uid: firebaseUser.uid, // Required by security rules
+          id: data.customToken ? '' : mockUid,
+          uid: data.customToken ? '' : mockUid,
           name,
           email,
           phone,
           role,
           organization: (role === 'NGO' || role === 'VET') ? org : undefined,
+          isVerifiedProfessional: (role === 'NGO' || role === 'VET') ? isVerifiedProfessional : undefined,
           createdAt: new Date().toISOString(), // Required by security rules
         };
 
-        // Save User Profile to Firestore
-        const { serverTimestamp } = await import('firebase/firestore');
-        await setDoc(doc(db, "users", firebaseUser.uid), {
-          ...newUser,
-          createdAt: serverTimestamp()
-        });
+        if (data.customToken) {
+          const userCredential = await signInWithCustomToken(auth, data.customToken);
+          const firebaseUser = userCredential.user;
+
+          newUser.id = firebaseUser.uid;
+          newUser.uid = firebaseUser.uid;
+
+          // Save User Profile to Firestore
+          const { serverTimestamp } = await import('firebase/firestore');
+          await setDoc(doc(db, "users", firebaseUser.uid), {
+            ...newUser,
+            createdAt: serverTimestamp()
+          });
+        } else if (data.devToken) {
+          // Dev Auth Flow
+          try {
+            const { serverTimestamp } = await import('firebase/firestore');
+            await setDoc(doc(db, "users", mockUid), {
+              ...newUser,
+              createdAt: serverTimestamp()
+            });
+          } catch (e) {
+            console.warn("Firestore unavailable, skipping saving to DB", e);
+          }
+        } else {
+           throw new Error("Invalid server response format");
+        }
 
         onRegister(newUser);
         navigate('/');
@@ -191,6 +251,27 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                     placeholder="e.g. Hope For Paws"
                   />
                 </div>
+              </div>
+            )}
+
+            {(role === 'NGO' || role === 'VET') && (
+              <div className="space-y-1 animate-in slide-in-from-top-2 duration-300">
+                <label className="text-[10px] font-bold text-gray-500 uppercase ml-1 tracking-widest">Professional Certificate / License</label>
+                <div className="relative">
+                  <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    required={true}
+                    onChange={handleImageUpload}
+                    className="w-full bg-gray-50 border-none rounded-2xl py-3 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                  />
+                </div>
+                {certificateB64 && (
+                    <p className="text-xs text-emerald-600 font-medium ml-1 mt-1 flex items-center gap-1">
+                        <ShieldCheck className="w-3 h-3" /> Document attached for AI Verification
+                    </p>
+                )}
               </div>
             )}
 

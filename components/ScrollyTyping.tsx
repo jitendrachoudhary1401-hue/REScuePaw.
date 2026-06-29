@@ -55,11 +55,16 @@ const ScrollyTyping: React.FC<ScrollyTypingProps> = ({
   const visibleChars = Math.floor(progress * totalChars);
 
   return (
-    <Component ref={containerRef} className={`${className} transition-colors duration-200`}>
+    <Component ref={containerRef} className={`${className} transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 drop-shadow-sm hover:drop-shadow-xl cursor-pointer`}>
       {chars.map((char, i) => (
         <span 
           key={i} 
-          className={`transition-colors duration-100 ${i < visibleChars ? highlightColor : baseColor}`}
+          className={`transition-all duration-150 inline-block ${i < visibleChars ? highlightColor : baseColor}`}
+          style={{
+            textShadow: i < visibleChars ? '0px 4px 8px rgba(0,0,0,0.15)' : 'none',
+            transform: i < visibleChars ? 'translateY(-1px)' : 'none',
+            whiteSpace: char === ' ' ? 'pre' : 'normal'
+          }}
           aria-hidden="true"
         >
           {char}

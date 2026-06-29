@@ -43,6 +43,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
 
       if (response.ok && data.success) {
         setStep('otp');
+        if (data.devOtp) {
+          setOtp(data.devOtp);
+          alert(`[DEV MODE] Auto-filled OTP: ${data.devOtp}\n\nTo send real emails, add a RESEND_API_KEY to your .env file.`);
+        }
       } else {
         setError(data.error || 'Failed to send OTP');
       }
@@ -75,33 +79,61 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
         throw new Error('Server returned an invalid response. Please try again later.');
       }
 
-      if (response.ok && data.success && data.customToken) {
-        const userCredential = await signInWithCustomToken(auth, data.customToken);
-        const firebaseUser = userCredential.user;
-
-        // Fetch or create user profile in Firestore
-        const userRef = doc(db, "users", firebaseUser.uid);
-        const userDoc = await getDoc(userRef);
-
+      if (response.ok && data.success) {
         let appUser: User;
-        if (userDoc.exists()) {
-          appUser = userDoc.data() as User;
+        const mockUid = `dev_${email.split('@')[0]}`;
+
+        if (data.customToken) {
+          const userCredential = await signInWithCustomToken(auth, data.customToken);
+          const firebaseUser = userCredential.user;
+
+          // Fetch or create user profile in Firestore
+          const userRef = doc(db, "users", firebaseUser.uid);
+          const userDoc = await getDoc(userRef);
+
+          if (userDoc.exists()) {
+            appUser = userDoc.data() as User;
+          } else {
+            // Create new profile if it doesn't exist
+            appUser = {
+              id: firebaseUser.uid,
+              uid: firebaseUser.uid, // Required by security rules
+              name: email.split('@')[0],
+              email: email,
+              role: 'CITIZEN',
+              createdAt: new Date().toISOString(), 
+            };
+            const { serverTimestamp } = await import('firebase/firestore');
+            await setDoc(userRef, {
+              ...appUser,
+              createdAt: serverTimestamp()
+            });
+          }
+        } else if (data.devToken) {
+           // Dev Auth Flow
+           appUser = {
+             id: mockUid,
+             uid: mockUid,
+             name: email.split('@')[0],
+             email: email,
+             role: 'CITIZEN',
+             createdAt: new Date().toISOString(),
+           };
+           
+           try {
+             const userRef = doc(db, "users", mockUid);
+             const userDoc = await getDoc(userRef);
+             if (userDoc.exists()) {
+               appUser = userDoc.data() as User;
+             } else {
+               const { serverTimestamp } = await import('firebase/firestore');
+               await setDoc(userRef, { ...appUser, createdAt: serverTimestamp() });
+             }
+           } catch (e) {
+             console.warn("Firestore unavailable, using memory user", e);
+           }
         } else {
-          // Create new profile if it doesn't exist
-          appUser = {
-            id: firebaseUser.uid,
-            uid: firebaseUser.uid, // Required by security rules
-            name: email.split('@')[0],
-            email: email,
-            role: 'CITIZEN',
-            createdAt: new Date().toISOString(), // Required by security rules (can be string or timestamp depending on client, but rules expect timestamp. Wait, client sends string if we use toISOString, let's use serverTimestamp or just let the client send a Date object)
-          };
-          // We need to use serverTimestamp for createdAt to match the timestamp type in rules
-          const { serverTimestamp } = await import('firebase/firestore');
-          await setDoc(userRef, {
-            ...appUser,
-            createdAt: serverTimestamp()
-          });
+           throw new Error("Invalid server response format");
         }
 
         onLogin(appUser);
@@ -157,7 +189,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin }) => {
     } catch (err: any) {
       console.error("Google Login Error:", err);
       if (err.code === 'auth/unauthorized-domain') {
-        setError('Google Login is disabled in this preview environment. Please use the Demo Accounts below or register with an email.');
+        setError(`Google Login failed. Please add ${window.location.hostname} to authorized domains in your Firebase Console (Authentication > Settings > Authorized domains).`);
       } else {
         setError(err.message || 'Google Sign-In failed.');
       }

@@ -10,6 +10,8 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "@dataconnect/admin-generated": "file:src/dataconnect-admin-generated",
+    "@dataconnect/generated": "file:src/dataconnect-generated",
     "@google/genai": "^1.37.0",
     "@vitejs/plugin-react": "^5.1.4",
     "cors": "^2.8.6",
@@ -19,6 +21,7 @@
     "firebase-admin": "^13.7.0",
     "lucide-react": "^0.562.0",
     "path": "^0.12.7",
+    "razorpay": "^2.9.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.12.0",

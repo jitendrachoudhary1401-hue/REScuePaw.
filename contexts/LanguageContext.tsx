@@ -24,6 +24,13 @@ const translations: Record<string, Record<Language, string>> = {
   donate: { en: 'Donate', hi: 'दान करें' },
   report: { en: 'Report', hi: 'रिपोर्ट' },
   adoption: { en: 'Adopt', hi: 'गोद लें' },
+  shop: { en: 'Shop', hi: 'दुकान' },
+  animalStuffs: { en: 'Animal Stuffs', hi: 'पशु सामग्री' },
+  categoryAll: { en: 'All', hi: 'सभी' },
+  categoryFood: { en: 'Food', hi: 'भोजन' },
+  categoryStuffs: { en: 'Stuffs', hi: 'सामग्री' },
+  buyNow: { en: 'Buy Now', hi: 'अभी खरीदें' },
+  shopDesc: { en: 'Get the best supplies and food for animals.', hi: 'जानवरों के लिए सर्वोत्तम आपूर्ति और भोजन प्राप्त करें।' },
 
   // HomeScreen
   missionControl: { en: 'Mission Control', hi: 'मिशन कंट्रोल' },

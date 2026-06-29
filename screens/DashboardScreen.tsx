@@ -308,7 +308,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ reports, onUpdate, on
       </div>
 
       {/* Transparency & Funding Banner */}
-      <div className="bg-emerald-50 border border-emerald-100 rounded-[2.5rem] p-6 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+      <div className="bg-emerald-50 border border-emerald-100 rounded-[2.5rem] p-6 flex flex-col md:flex-row items-center gap-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 transform">
         <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-emerald-100">
           <Coins className="w-8 h-8 text-emerald-600" />
         </div>
@@ -335,8 +335,8 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ reports, onUpdate, on
           <button 
             key={tab.key} 
             onClick={() => setActiveTab(tab.key)}
-            className={`px-6 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-wider whitespace-nowrap transition-all ${
-              activeTab === tab.key ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50'
+            className={`px-6 py-3 rounded-2xl text-xs font-extrabold uppercase tracking-wider whitespace-nowrap transition-all duration-300 transform hover:-translate-y-1 ${
+              activeTab === tab.key ? 'bg-emerald-600 text-white shadow-[0_4px_0_0_#059669] hover:shadow-[0_6px_0_0_#047857] active:shadow-[0_0px_0_0_#059669] active:translate-y-0.5' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:shadow-[0_4px_10px_rgba(0,0,0,0.05)]'
             }`}>
             {tab.label}
           </button>
@@ -356,7 +356,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ reports, onUpdate, on
           filteredReports.map(report => {
             const petInfo = getPetInfo(report);
             return (
-            <div key={report.id} className="bg-white border border-gray-100 rounded-[var(--border-radius-xl)] overflow-hidden shadow-sm hover:shadow-xl hover:shadow-emerald-50 transition-all flex flex-col h-full group">
+            <div key={report.id} className="bg-white border border-gray-100 rounded-[var(--border-radius-xl)] overflow-hidden shadow-md hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.3)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full group">
               {report.status === ReportStatus.TREATED && report.recoveryPhoto ? (
                 <div className="p-5 grid grid-cols-2 gap-4">
                   <div>

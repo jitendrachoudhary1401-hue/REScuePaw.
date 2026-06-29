@@ -385,6 +385,17 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
               <h3 className="text-lg font-800 text-gray-900">{analysis.foodType}</h3>
             </div>
           </div>
+          
+          {analysis.isSpoiledOrExpired && (
+            <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-2xl border border-red-200 flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-bold">Unsafe / Spoiled Food Detected</p>
+                <p className="text-xs font-medium text-red-600 mt-1">This food appears to be expired, spoiled, or contains toxic items and cannot be accepted for donation.</p>
+              </div>
+            </div>
+          )}
+
           {analysis.imageQuality && (
             <div className={`flex items-center gap-2 mb-3 px-3 py-1.5 rounded-lg w-fit ${analysis.imageQuality === 'Low' ? 'bg-orange-100 text-orange-700' : 'bg-blue-50 text-blue-700'}`}>
                <Signal className="w-3.5 h-3.5" />
@@ -392,6 +403,17 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
             </div>
           )}
           <p className="text-sm font-medium text-gray-600 border-l-2 border-gray-200 pl-3 mb-4">Quantity: <span className="font-bold">{analysis.estimatedQuantity}</span></p>
+          
+          {analysis.specificFoodDetected && analysis.specificFoodDetected.length > 0 && (
+            <div className="mb-4 pr-4">
+              <h4 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Detected Items</h4>
+              <div className="flex flex-wrap gap-2">
+                {analysis.specificFoodDetected.map((item, idx) => (
+                  <span key={idx} className="text-xs font-bold bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-100">{item}</span>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
             <div className="flex items-center gap-2 mb-2"><Info className="w-4 h-4 text-gray-500 shrink-0" /> <h4 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Nutritionist's Note</h4></div>
             <p className="text-sm font-medium text-gray-800 leading-relaxed">{analysis.comments}</p>
