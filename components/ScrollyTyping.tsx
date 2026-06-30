@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, RefObject } from 'react';
 
 interface ScrollyTypingProps {
   text: string;
@@ -6,7 +6,8 @@ interface ScrollyTypingProps {
   highlightColor?: string;
   baseColor?: string;
   as?: React.ElementType;
-  threshold?: number; // 0 to 1, where to start the effect in viewport
+  threshold?: number;
+  scrollContainerRef?: RefObject<HTMLElement | null>;
 }
 
 const ScrollyTyping: React.FC<ScrollyTypingProps> = ({ 
@@ -15,7 +16,8 @@ const ScrollyTyping: React.FC<ScrollyTypingProps> = ({
   highlightColor = 'text-gray-900', 
   baseColor = 'text-gray-300',
   as: Component = 'p',
-  threshold = 0.8 // Start when element is at 80% of viewport height
+  threshold = 0.8,
+  scrollContainerRef,
 }) => {
   const containerRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
@@ -23,53 +25,73 @@ const ScrollyTyping: React.FC<ScrollyTypingProps> = ({
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
+      
       const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
       
-      // Define the scroll range for the effect
-      // Starts when element enters threshold
-      const start = windowHeight * threshold;
-      // Ends when element is further up (e.g., 30% of viewport)
-      const end = windowHeight * 0.3;
+      // If we have a scrollContainerRef, calculate relative to that container
+      let viewportHeight: number;
+      let elementTop: number;
       
-      // Calculate progress 0 to 1
-      let current = (start - rect.top) / (start - end);
+      if (scrollContainerRef?.current) {
+        const containerRect = scrollContainerRef.current.getBoundingClientRect();
+        viewportHeight = containerRect.height;
+        elementTop = rect.top - containerRect.top;
+      } else {
+        viewportHeight = window.innerHeight;
+        elementTop = rect.top;
+      }
+      
+      const start = viewportHeight * threshold;
+      const end = viewportHeight * 0.25;
+      
+      let current = (start - elementTop) / (start - end);
       current = Math.min(Math.max(current, 0), 1);
       
       setProgress(current);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    // Listen to the scroll container if provided, otherwise window
+    const scrollTarget = scrollContainerRef?.current || window;
+    
+    scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll);
     // Initial calculation
-    setTimeout(handleScroll, 100);
+    requestAnimationFrame(handleScroll);
     
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      scrollTarget.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, [threshold]);
+  }, [threshold, scrollContainerRef]);
 
-  const chars = text.split('');
-  const totalChars = chars.length;
-  const visibleChars = Math.floor(progress * totalChars);
+  // Split into words instead of characters for smoother feel
+  const words = text.split(' ');
+  const totalWords = words.length;
+  const visibleWords = Math.floor(progress * totalWords * 1.3); // slight overshoot for snappy feel
 
   return (
-    <Component ref={containerRef} className={`${className} transition-all duration-300 transform hover:scale-[1.02] hover:-translate-y-1 drop-shadow-sm hover:drop-shadow-xl cursor-pointer`}>
-      {chars.map((char, i) => (
-        <span 
-          key={i} 
-          className={`transition-all duration-150 inline-block ${i < visibleChars ? highlightColor : baseColor}`}
-          style={{
-            textShadow: i < visibleChars ? '0px 4px 8px rgba(0,0,0,0.15)' : 'none',
-            transform: i < visibleChars ? 'translateY(-1px)' : 'none',
-            whiteSpace: char === ' ' ? 'pre' : 'normal'
-          }}
-          aria-hidden="true"
-        >
-          {char}
-        </span>
-      ))}
+    <Component ref={containerRef} className={className}>
+      {words.map((word, i) => {
+        const isVisible = i < visibleWords;
+        return (
+          <span key={i} className="inline-block">
+            <span 
+              className={`inline-block transition-all duration-500 ${
+                isVisible 
+                  ? `${highlightColor} word-revealed` 
+                  : `${baseColor} word-hidden`
+              }`}
+              style={{
+                transitionDelay: isVisible ? `${Math.min(i * 30, 200)}ms` : '0ms',
+              }}
+              aria-hidden="true"
+            >
+              {word}
+            </span>
+            {i < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+          </span>
+        );
+      })}
       <span className="sr-only">{text}</span>
     </Component>
   );
