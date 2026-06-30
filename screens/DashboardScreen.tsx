@@ -308,7 +308,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ reports, onUpdate, on
       </div>
 
       {/* Transparency & Funding Banner */}
-      <div className="bg-emerald-50 border border-emerald-100 rounded-[2.5rem] p-6 flex flex-col md:flex-row items-center gap-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 transform">
+      <div className="card-lift bg-emerald-50 border border-emerald-100 rounded-[2.5rem] p-6 flex flex-col md:flex-row items-center gap-6">
         <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm border border-emerald-100">
           <Coins className="w-8 h-8 text-emerald-600" />
         </div>
@@ -356,7 +356,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ reports, onUpdate, on
           filteredReports.map(report => {
             const petInfo = getPetInfo(report);
             return (
-            <div key={report.id} className="bg-white border border-gray-100 rounded-[var(--border-radius-xl)] overflow-hidden shadow-md hover:shadow-[0_20px_40px_-15px_rgba(16,185,129,0.3)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col h-full group">
+            <div key={report.id} className="card-lift bg-white border border-gray-100 rounded-[var(--border-radius-xl)] overflow-hidden flex flex-col h-full group">
               {report.status === ReportStatus.TREATED && report.recoveryPhoto ? (
                 <div className="p-5 grid grid-cols-2 gap-4">
                   <div>

@@ -254,12 +254,12 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
       {['Capture', 'Analyze', 'Confirm'].map((name, index) => (
         <React.Fragment key={name}>
           <div className="flex items-center gap-2">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${step > index ? 'bg-emerald-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${step > index ? 'bg-emerald-600 text-white shadow-[0_0_15px_rgba(16,185,129,0.5)]' : 'bg-gray-200/50 text-gray-500'}`}>
               {step > index ? <Check className="w-4 h-4" /> : index + 1}
             </div>
-            <span className={`font-bold text-xs uppercase tracking-wider ${step > index ? 'text-emerald-600' : 'text-gray-400'}`}>{name}</span>
+            <span className={`font-bold text-xs uppercase tracking-wider transition-colors ${step > index ? 'text-emerald-600 drop-shadow-sm' : 'text-gray-400'}`}>{name}</span>
           </div>
-          {index < 2 && <div className={`flex-1 h-1 rounded-full ${step > index + 1 ? 'bg-emerald-600' : 'bg-gray-200'}`}></div>}
+          {index < 2 && <div className={`flex-1 h-1 rounded-full transition-colors ${step > index + 1 ? 'bg-emerald-600 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-gray-200/50'}`}></div>}
         </React.Fragment>
       ))}
     </div>
@@ -319,7 +319,7 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
           <div className="relative min-h-[500px]">
             {/* Step 1: Upload */}
             {step === 1 && (
-              <div key="step1" className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm animate-in fade-in zoom-in-95 duration-500 text-center flex flex-col items-center justify-center min-h-[500px]">
+              <div key="step1" className="glass-card rounded-[2.5rem] p-8 border border-white/60 shadow-xl animate-in fade-in zoom-in-95 duration-500 text-center flex flex-col items-center justify-center min-h-[500px]">
                 <div className="p-6 bg-gray-50 rounded-[2rem] shadow-inner mb-6">
                   <Camera className="w-12 h-12 text-emerald-600" />
                 </div>
@@ -340,8 +340,9 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
             {/* Step 2: Analyze */}
             {step === 2 && (
               <div key="step2" className="animate-in fade-in duration-700">
-                <div className="relative aspect-video rounded-[2.5rem] bg-gray-900 overflow-hidden mb-6 shadow-lg">
-                  <img src={photo!} className={`w-full h-full object-cover transition-all duration-700 ${aiResult ? '' : 'opacity-30 blur-sm scale-110'}`} />
+                <div className="gradient-border rounded-[2.5rem] p-[3px] mb-6 shadow-xl">
+                  <div className="relative aspect-video rounded-[2.3rem] bg-gray-900 overflow-hidden">
+                    <img src={photo!} className={`w-full h-full object-cover transition-all duration-700 ${aiResult ? '' : 'opacity-30 blur-sm scale-110'}`} />
                   
                   {/* Loading / Error State Overlay */}
                   {(!aiResult || isAnalyzing) && (
@@ -363,10 +364,11 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
                     </div>
                   )}
                 </div>
+                </div>
 
                 {/* AI Result Card - Displayed BELOW the image when analysis is done */}
                 {aiResult && !isAnalyzing && (
-                  <div className="w-full bg-white border border-gray-100 rounded-[2.5rem] p-6 shadow-xl animate-in slide-in-from-bottom-4">
+                  <div className="w-full glass-card border border-white/60 rounded-[2.5rem] p-6 shadow-xl animate-in slide-in-from-bottom-4">
                     <div className="flex justify-between items-start mb-4">
                        <div className="flex items-center gap-3">
                           <div className="p-2.5 bg-emerald-100 rounded-xl"><Sparkles className="w-5 h-5 text-emerald-600" /></div>
@@ -446,17 +448,17 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
                       </div>
                     </div>
                      <div>
-                        <label className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-2 ml-1">Incident Notes</label>
+                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-2 ml-1">Incident Notes</label>
                         <textarea
                           placeholder="Add any other relevant details..."
-                          className="w-full h-48 p-4 bg-white border border-gray-200 shadow-sm rounded-2xl text-sm"
+                          className="w-full h-48 p-4 glass border border-white/60 shadow-sm rounded-2xl text-sm outline-none focus:ring-4 focus:ring-emerald-500/20 transition-all"
                           value={notes}
                           onChange={(e) => setNotes(e.target.value)}
                         />
                     </div>
                  </div>
                  <div className="space-y-6">
-                    <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-4">
+                    <div className="glass-card border border-white/60 shadow-sm rounded-2xl p-4">
                        <label className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2 ml-1"><MapPin className="w-4 h-4"/> Location</label>
                         {isManualEntry ? (
                           <textarea
@@ -477,7 +479,7 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
                     <button
                       onClick={handleSubmit}
                       disabled={isGeocoding || isCheckingDuplicate}
-                      className="w-full bg-emerald-600 text-white font-800 text-lg py-5 rounded-2xl shadow-2xl shadow-emerald-200 disabled:bg-gray-300 flex items-center justify-center gap-3">
+                      className="glow-button w-full bg-emerald-600 text-white font-800 text-lg py-5 rounded-2xl shadow-2xl shadow-emerald-200 disabled:bg-gray-300 disabled:shadow-none flex items-center justify-center gap-3 hover:bg-emerald-700 transition-colors">
                       {isGeocoding ? <><Loader2 className="w-6 h-6 animate-spin" /> Verifying Address...</> : isCheckingDuplicate ? <><Loader2 className="w-6 h-6 animate-spin" /> Checking Duplicates...</> : 'Broadcast Emergency Report'}
                     </button>
                     <p className="text-[10px] text-center text-gray-500 font-bold uppercase tracking-tighter flex items-center justify-center gap-1.5">

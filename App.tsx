@@ -374,9 +374,10 @@ const AppContent: React.FC = () => {
           currentUser ? (
           <>
             {/* Desktop Sidebar */}
-            <aside className="hidden md:flex flex-col w-72 bg-white border-r border-gray-100 h-screen sticky top-0 z-40 p-6 shadow-sm">
-              <Link to="/" className="flex items-center gap-3 mb-10 px-2">
-                <div className="p-2.5 bg-emerald-600 rounded-xl shadow-lg shadow-emerald-200">
+            <aside className="hidden md:flex flex-col w-72 h-screen sticky top-0 z-40 p-6 shadow-sm mesh-gradient border-r border-emerald-900/5">
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-3xl z-[-1]" />
+              <Link to="/" className="flex items-center gap-3 mb-10 px-2 group">
+                <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg shadow-emerald-200 group-hover:scale-105 transition-transform">
                   <PawPrint className="w-6 h-6 text-white" />
                 </div>
                 <span className="font-extrabold text-gray-800 text-xl tracking-tight italic">REScue <span className="text-emerald-600">Paw</span></span>
@@ -429,9 +430,9 @@ const AppContent: React.FC = () => {
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
               {/* Mobile Header */}
-              <header className="md:hidden px-6 py-4 bg-white border-b flex justify-between items-center sticky top-0 z-30">
-                <Link to="/" className="flex items-center gap-2">
-                  <div className="p-2 bg-emerald-600 rounded-lg">
+              <header className="md:hidden px-6 py-4 glass sticky top-0 z-30 flex justify-between items-center border-b border-gray-200/50">
+                <Link to="/" className="flex items-center gap-2 group">
+                  <div className="p-2 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg group-hover:scale-105 transition-transform shadow-md shadow-emerald-200">
                     <PawPrint className="w-5 h-5 text-white" />
                   </div>
                   <span className="font-bold text-gray-800 text-lg leading-tight tracking-tight italic">REScue <span className="text-emerald-600">Paw</span></span>
@@ -475,34 +476,35 @@ const AppContent: React.FC = () => {
               </main>
 
               {/* Mobile Bottom Nav */}
-              <nav className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t px-6 py-3 flex justify-around items-center safe-bottom z-50">
-                <Link to="/" className="flex flex-col items-center gap-1 text-gray-600 hover:text-emerald-500 active:text-emerald-600">
+              <nav className="md:hidden fixed bottom-6 left-6 right-6 glass-card rounded-[2rem] px-6 py-4 flex justify-around items-center safe-bottom z-50 shadow-2xl shadow-emerald-900/10 border border-white/60">
+                <Link to="/" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
                   <Home className="w-6 h-6" />
-                  <span className="text-[10px] font-medium uppercase tracking-wider">{t('home')}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('home')}</span>
                 </Link>
-                <Link to="/adoption" className="flex flex-col items-center gap-1 text-gray-600 hover:text-emerald-500 active:text-emerald-600">
+                <Link to="/adoption" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
                   <Heart className="w-6 h-6" />
-                  <span className="text-[10px] font-medium uppercase tracking-wider">{t('adoption')}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('adoption')}</span>
                 </Link>
-                <Link to="/shop" className="flex flex-col items-center gap-1 text-gray-600 hover:text-emerald-500 active:text-emerald-600">
+                <Link to="/shop" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
                   <ShoppingBag className="w-6 h-6" />
-                  <span className="text-[10px] font-medium uppercase tracking-wider">{t('shop')}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('shop')}</span>
                 </Link>
-                <Link to="/report" className="flex flex-col items-center -mt-8">
-                  <div className="w-14 h-14 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-200 border-4 border-white transform transition-transform active:scale-95 hover:scale-105 hover:shadow-emerald-300">
-                    <PlusCircle className="w-8 h-8 text-white" />
+                <Link to="/report" className="flex flex-col items-center -mt-10 relative">
+                  <div className="absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-50 animate-glow-pulse" />
+                  <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center shadow-lg shadow-emerald-300/50 border-[3px] border-white transform transition-transform active:scale-95 hover:scale-105 hover:rotate-12">
+                    <PlusCircle className="w-7 h-7 text-white" />
                   </div>
-                  <span className="text-[10px] font-bold text-emerald-600 mt-1 uppercase">{t('report')}</span>
+                  <span className="text-[10px] font-black text-emerald-600 mt-1.5 uppercase">{t('report')}</span>
                 </Link>
                 {currentUser.role === 'VOLUNTEER' || currentUser.role === 'NGO' ? (
-                  <Link to="/food-donations" className="flex flex-col items-center gap-1 text-gray-600 hover:text-amber-500 active:text-amber-600">
+                  <Link to="/food-donations" className="flex flex-col items-center gap-1 text-gray-500 hover:text-amber-500 active:text-amber-600 transition-colors">
                     <Soup className="w-6 h-6" />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">{t('food')}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">{t('food')}</span>
                   </Link>
                 ) : (
-                  <Link to="/donate" className="flex flex-col items-center gap-1 text-gray-600 hover:text-amber-500 active:text-amber-600">
+                  <Link to="/donate" className="flex flex-col items-center gap-1 text-gray-500 hover:text-amber-500 active:text-amber-600 transition-colors">
                     <Bone className="w-6 h-6" />
-                    <span className="text-[10px] font-medium uppercase tracking-wider">{t('donate')}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">{t('donate')}</span>
                   </Link>
                 )}
               </nav>
@@ -519,8 +521,12 @@ const AppContent: React.FC = () => {
               </div>
               
               {/* Right Panel - Auth Forms */}
-              <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 relative">
-                <div className="w-full max-w-md bg-white md:rounded-[2.5rem] md:shadow-2xl md:shadow-emerald-50 md:p-8 overflow-hidden border border-transparent md:border-gray-100">
+              <div className="w-full md:w-1/2 flex items-center justify-center p-6 md:p-12 relative mesh-gradient overflow-hidden">
+                {/* Decorative floating orbs */}
+                <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full blur-3xl animate-float-slow opacity-60" style={{ background: 'rgba(16, 185, 129, 0.15)' }} />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full blur-3xl animate-float opacity-50" style={{ background: 'rgba(59, 130, 246, 0.1)' }} />
+                
+                <div className="relative z-10 w-full max-w-md glass-card md:rounded-[2.5rem] md:shadow-2xl md:p-8 overflow-hidden border border-white/60">
                   <Routes>
                     <Route path="/login" element={<LoginScreen onLogin={login} />} />
                     <Route path="/register" element={<RegisterScreen onRegister={login} />} />

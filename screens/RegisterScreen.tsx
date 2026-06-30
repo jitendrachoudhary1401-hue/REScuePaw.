@@ -231,7 +231,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
+                  className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
                   placeholder="e.g. Alex Johnson"
                 />
               </div>
@@ -247,7 +247,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                     required={true}
                     value={org}
                     onChange={(e) => setOrg(e.target.value)}
-                    className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
+                    className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
                     placeholder="e.g. Hope For Paws"
                   />
                 </div>
@@ -264,7 +264,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                     accept="image/*"
                     required={true}
                     onChange={handleImageUpload}
-                    className="w-full bg-gray-50 border-none rounded-2xl py-3 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
+                    className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
                   />
                 </div>
                 {certificateB64 && (
@@ -284,7 +284,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
+                  className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
                   placeholder="e.g. hero@rescue.com"
                 />
               </div>
@@ -299,7 +299,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
+                  className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium"
                   placeholder="e.g. 98765 43210"
                 />
               </div>
@@ -316,7 +316,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
                 maxLength={6}
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                className="w-full bg-gray-50 border-none rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium tracking-[0.5em] text-center"
+                className="w-full bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl py-3.5 pl-10 pr-4 text-sm text-gray-900 focus:ring-4 focus:ring-emerald-50 outline-none transition-all font-medium tracking-[0.5em] text-center"
                 placeholder="000000"
               />
             </div>
@@ -335,7 +335,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onRegister }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-emerald-600 text-white font-800 py-3.5 rounded-[2rem] shadow-lg shadow-emerald-100 flex items-center justify-center gap-2 mt-2 active:scale-95 transition-transform disabled:bg-gray-200 disabled:shadow-none hover:bg-emerald-700"
+          className="glow-button w-full bg-emerald-600 text-white font-800 py-3.5 rounded-[2rem] shadow-lg shadow-emerald-200 flex items-center justify-center gap-2 mt-2 active:scale-95 transition-transform disabled:bg-gray-200 disabled:shadow-none hover:bg-emerald-700"
         >
           {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : (
             <>

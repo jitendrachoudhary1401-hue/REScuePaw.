@@ -14,6 +14,7 @@ const AuthSidePanel: React.FC = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/90 to-black/60" />
+        <div className="absolute inset-0 z-0 particles-bg opacity-40 pointer-events-none" />
       </div>
 
       {/* Content */}
@@ -26,7 +27,7 @@ const AuthSidePanel: React.FC = () => {
         </div>
         
         <div className="space-y-6 max-w-lg mt-20">
-           <h2 className="text-5xl font-black leading-tight tracking-tight">
+           <h2 className="text-5xl font-black leading-tight tracking-tight animate-soft-pulse">
              <span className="block text-emerald-400">Saving Lives</span>
              <Typewriter 
                text="One Click at a Time." 

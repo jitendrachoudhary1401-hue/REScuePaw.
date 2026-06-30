@@ -356,7 +356,7 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
                </div>
             ) : (
                pendingListings.map(report => (
-                  <div key={report.id} className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm flex flex-col">
+                  <div key={report.id} className="card-lift bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col">
                      <div className="relative h-48">
                         <img src={report.recoveryPhoto || report.photo} alt="Case" className="w-full h-full object-cover" />
                         <div className="absolute top-4 left-4 bg-emerald-600 text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
@@ -391,7 +391,7 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
             </div>
           ) : (
             visiblePets.map(pet => (
-              <div key={pet.id} className="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl hover:shadow-rose-50 transition-all flex flex-col group relative">
+              <div key={pet.id} className="card-lift bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col group relative">
                 
                 {pet.isAdopted && (
                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6">
