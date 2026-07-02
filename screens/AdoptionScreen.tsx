@@ -230,7 +230,7 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
   };
 
   return (
-    <div className="p-6 md:p-0 space-y-8 animate-in fade-in duration-500 pb-24 md:pb-6">
+    <div className="p-6 md:p-0 space-y-8 page-enter pb-28 md:pb-6">
       <ListingModal 
         isOpen={isListingModalOpen} 
         onClose={() => setIsListingModalOpen(false)}
@@ -242,8 +242,12 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
       
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Heart className="w-5 h-5 text-rose-500 animate-heartbeat" />
+            <span className="text-[10px] font-extrabold text-rose-500 uppercase tracking-widest">Find Your Soulmate</span>
+          </div>
           <h1 className="text-3xl font-800 text-gray-900 tracking-tight">{t('adoptHero')}</h1>
-          <p className="text-sm text-gray-700 font-medium mt-1">{t('adoptHeroDesc')}</p>
+          <p className="text-sm text-gray-500 font-medium mt-1">{t('adoptHeroDesc')}</p>
         </div>
         {!isStaff && (
           <div className="flex gap-2">
@@ -390,8 +394,8 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
               </p>
             </div>
           ) : (
-            visiblePets.map(pet => (
-              <div key={pet.id} className="card-lift bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col group relative">
+            visiblePets.map((pet, idx) => (
+              <div key={pet.id} className="card-lift bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden flex flex-col group relative spotlight-card animate-slide-in-bottom" style={{ animationDelay: `${idx * 0.1}s` }}>
                 
                 {pet.isAdopted && (
                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6">
@@ -419,11 +423,22 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
                 <div className="p-6 flex-1 flex flex-col">
                     <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 mb-4 font-medium">{pet.description}</p>
                     
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       {pet.healthStatus.split(',').map((status, i) => (
                           <span key={i} className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-lg flex items-center gap-1">
                             <CheckCircle2 className="w-3 h-3" /> {status.trim()}
                           </span>
+                      ))}
+                    </div>
+
+                    {/* Personality Tags */}
+                    <div className="flex flex-wrap gap-1.5 mb-6">
+                      {['Playful', 'Friendly', 'Active'].map((tag, i) => (
+                        <span key={i} className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
+                          i === 0 ? 'bg-pink-50 text-pink-600' : i === 1 ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
+                        }`}>
+                          {tag}
+                        </span>
                       ))}
                     </div>
 
@@ -433,8 +448,8 @@ const AdoptionScreen: React.FC<AdoptionScreenProps> = ({ pets = [], currentUser,
                           <p className="text-lg font-800 text-gray-900">{pet.fee}</p>
                       </div>
                       {!pet.isAdopted && (
-                        <Link to={`/adoption/apply/${pet.id}`} className="bg-gray-900 text-white px-6 py-3 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-rose-500 hover:shadow-lg hover:shadow-rose-200 transition-all active:scale-95 flex items-center gap-2">
-                            {t('adoptMe')} <ArrowRight className="w-4 h-4" />
+                        <Link to={`/adoption/apply/${pet.id}`} className="bg-gray-900 text-white px-6 py-3 rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-rose-500 hover:shadow-lg hover:shadow-rose-200 transition-all active:scale-95 flex items-center gap-2 shine-button group">
+                            <Heart className="w-4 h-4 group-hover:animate-heartbeat" /> {t('adoptMe')} <ArrowRight className="w-4 h-4" />
                         </Link>
                       )}
                     </div>

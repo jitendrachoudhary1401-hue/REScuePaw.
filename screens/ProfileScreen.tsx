@@ -582,67 +582,119 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ user, reports, pets = [],
 
   // Main Profile Content
   const MainProfileContent = () => (
-      <div className="p-6 md:p-0 space-y-8 animate-in fade-in duration-500 max-w-5xl mx-auto">
+      <div className="p-6 md:p-0 space-y-8 page-enter max-w-5xl mx-auto pb-28 md:pb-6">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           <div className="md:col-span-4 space-y-6">
-            <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm text-center">
-              <div className="relative inline-block mb-4 group">
-                <div className="w-32 h-32 bg-emerald-50 rounded-[2.em] flex items-center justify-center border-4 border-white shadow-lg overflow-hidden text-emerald-600 font-bold text-5xl">
-                   {user.avatar ? (
-                     <img src={user.avatar} alt="User Avatar" className="w-full h-full object-cover" />
-                   ) : (
-                     user.name[0]
-                   )}
-                </div>
-                <button onClick={() => avatarInputRef.current?.click()} className="absolute bottom-0 -right-2 p-2.5 bg-white rounded-full shadow-md text-gray-600 hover:bg-emerald-500 hover:text-white transition-all transform opacity-0 group-hover:opacity-100 group-hover:scale-110">
-                   <Camera className="w-4 h-4" />
+            <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm text-center overflow-hidden card-lift spotlight-card">
+              {/* Profile Hero Banner */}
+              <div className="h-32 bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 relative">
+                <div className="absolute inset-0 bg-white/10 blur-xl opacity-50 animate-pulse" />
+                <div className="absolute inset-0 particles-bg opacity-30" />
+                <button onClick={() => avatarInputRef.current?.click()} className="absolute top-4 right-4 p-2 bg-black/20 backdrop-blur-md rounded-full text-white hover:bg-black/40 transition-colors z-10">
+                  <Camera className="w-4 h-4" />
                 </button>
-                {user.avatar && (
-                  <button onClick={handleRemoveAvatar} className="absolute top-0 -right-2 p-2.5 bg-white rounded-full shadow-md text-gray-600 hover:bg-rose-500 hover:text-white transition-all transform opacity-0 group-hover:opacity-100 group-hover:scale-110 delay-100">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
-                <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
               </div>
-              <div>
-                <h2 className="text-2xl font-800 text-gray-900">{user.name}</h2>
-                <span className="text-[10px] font-800 bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full uppercase tracking-widest">{roleLabels[user.role]}</span>
+              
+              <div className="px-8 pb-8 relative">
+                {/* Overlapping Avatar with Progress Ring */}
+                <div className="relative inline-block -mt-16 mb-4 group">
+                  <div className="relative w-32 h-32 rounded-[2rem] bg-white p-1.5 shadow-xl">
+                    {/* SVG Radial Progress Background */}
+                    <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                      <circle cx="50" cy="50" r="48" fill="none" stroke="#f3f4f6" strokeWidth="4" />
+                      <circle cx="50" cy="50" r="48" fill="none" stroke="#10b981" strokeWidth="4" 
+                        strokeDasharray="301.59" strokeDashoffset="75.39" className="transition-all duration-1000 ease-out" 
+                      />
+                    </svg>
+                    
+                    <div className="w-full h-full bg-emerald-50 rounded-[1.7rem] flex items-center justify-center overflow-hidden text-emerald-600 font-bold text-5xl relative z-10">
+                       {user.avatar ? (
+                         <img src={user.avatar} alt="User Avatar" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                       ) : (
+                         user.name[0]
+                       )}
+                    </div>
+                  </div>
+                  
+                  {/* Remove Avatar Button */}
+                  {user.avatar && (
+                    <button onClick={handleRemoveAvatar} className="absolute bottom-0 -right-2 p-2 bg-white rounded-full shadow-lg text-rose-500 hover:bg-rose-500 hover:text-white transition-colors border border-gray-100 z-20">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                  
+                  {/* Level Badge */}
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest shadow-lg border-2 border-white z-20 animate-badge-pop shine-button">
+                    Level 5
+                  </div>
+                </div>
+                
+                <div>
+                  <h2 className="text-2xl font-800 text-gray-900">{user.name}</h2>
+                  <div className="flex items-center justify-center gap-2 mt-2">
+                    <span className="text-[10px] font-800 bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full uppercase tracking-widest">{roleLabels[user.role]}</span>
+                    <span className="text-[10px] font-800 bg-blue-50 text-blue-600 px-3 py-1 rounded-full uppercase tracking-widest flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3" /> Verified
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Recent Achievement */}
+                <div className="mt-6 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-100 flex items-center gap-3 text-left animate-slide-in-bottom">
+                  <div className="p-2 bg-white rounded-xl shadow-sm"><Star className="w-5 h-5 text-amber-500 fill-amber-500" /></div>
+                  <div>
+                    <p className="text-[10px] font-extrabold text-amber-600 uppercase tracking-widest">Latest Badge</p>
+                    <p className="text-sm font-bold text-gray-900">Guardian Angel</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <button onClick={onLogout} className="md:hidden w-full flex items-center justify-center gap-3 p-4 text-rose-500 font-800 text-sm bg-white rounded-[2rem]">
+            
+            <button onClick={onLogout} className="md:hidden w-full flex items-center justify-center gap-3 p-4 text-rose-500 font-800 text-sm bg-white border border-gray-100 rounded-[2rem] hover:bg-rose-50 transition-colors shadow-sm active:scale-95">
               <LogOut className="w-5 h-5" /> {t('signOut')}
             </button>
           </div>
 
           <div className="md:col-span-8 space-y-6">
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 text-center">
-                <Heart className="w-6 h-6 text-rose-500 mx-auto mb-2" />
-                <p className="text-3xl font-800 text-gray-900">{user.role === 'CITIZEN' ? userReports.length : handledReports.length}</p>
-                <p className="text-3xl font-800 text-gray-900">{user.role === 'CITIZEN' ? userReports.length : handledReports.length}</p>
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{user.role === 'CITIZEN' ? 'Reports' : 'Cases'}</p>
+              <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 text-center card-lift spotlight-card group">
+                <div className="w-12 h-12 bg-rose-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                  <Heart className="w-6 h-6 text-rose-500" />
+                </div>
+                <p className="text-3xl font-800 text-gray-900 tabular-nums">{user.role === 'CITIZEN' ? userReports.length : handledReports.length}</p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1">{user.role === 'CITIZEN' ? 'Reports' : 'Cases Handled'}</p>
               </div>
-              <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 text-center">
-                <Award className="w-6 h-6 text-emerald-500 mx-auto mb-2" />
-                <p className="text-3xl font-800 text-gray-900">{totalImpact}</p>
-                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Impact Score</p>
+              <div className="bg-white p-6 rounded-[2.5rem] border border-gray-100 text-center card-lift spotlight-card group relative overflow-hidden">
+                <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-50 rounded-full blur-2xl group-hover:bg-emerald-100 transition-colors" />
+                <div className="w-12 h-12 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-300 relative z-10">
+                  <Award className="w-6 h-6 text-emerald-500" />
+                </div>
+                <p className="text-3xl font-800 text-gray-900 tabular-nums relative z-10">{totalImpact}</p>
+                <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1 relative z-10">Impact Score</p>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-100 rounded-[2.5rem] p-2">
+            <div className="bg-white border border-gray-100 rounded-[2.5rem] p-2 shadow-sm">
               <div className="space-y-1">
-                {menuItems.map(item => (
-                  <button key={item.id} onClick={() => setCurrentView(item.id)} className="w-full flex items-center justify-between p-4 hover:bg-gray-50 rounded-2xl group">
+                {menuItems.map((item, i) => (
+                  <button 
+                    key={item.id} 
+                    onClick={() => setCurrentView(item.id)} 
+                    className="w-full flex items-center justify-between p-4 hover:bg-gray-50 rounded-2xl group transition-colors animate-slide-in-right"
+                    style={{ animationDelay: `${i * 0.05}s` }}
+                  >
                     <div className="flex items-center gap-4">
-                      <div className="p-2.5 bg-gray-100 rounded-xl group-hover:bg-emerald-50">
-                        <item.icon className="w-5 h-5 text-gray-500 group-hover:text-emerald-600" />
+                      <div className="p-3 bg-gray-50 border border-gray-100 rounded-xl group-hover:bg-white group-hover:shadow-sm group-hover:border-emerald-100 transition-all duration-300 group-hover:scale-110">
+                        <item.icon className="w-5 h-5 text-gray-500 group-hover:text-emerald-600 transition-colors" />
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-gray-900 text-left">{item.label}</p>
-                        <p className="text-[10px] text-gray-500 text-left">{item.sub}</p>
+                        <p className="text-sm font-bold text-gray-900 text-left group-hover:text-emerald-700 transition-colors">{item.label}</p>
+                        <p className="text-[10px] text-gray-500 text-left font-medium">{item.sub}</p>
                       </div>
                     </div>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                    <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-emerald-50 transition-colors">
+                      <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 transition-colors" />
+                    </div>
                   </button>
                 ))}
               </div>

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Camera, MapPin, Activity, ChevronRight, Info, PawPrint, Heart, Users, Shield, ArrowUpRight, Bone, Soup, Sparkles } from 'lucide-react';
+import { Camera, MapPin, Activity, ChevronRight, Info, PawPrint, Heart, Users, Shield, ArrowUpRight, Bone, Soup, Sparkles, Sun, Moon, CloudSun, Zap } from 'lucide-react';
 import { UserRole, EmergencyReport, Donation, DonationStatus } from '../types';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -16,7 +16,6 @@ const AnimatedStat: React.FC<{ target: string; duration?: number }> = ({ target,
   const [display, setDisplay] = useState('0');
   
   useEffect(() => {
-    // Parse the target: could be "1.2k", "450", "98%"
     const isPercentage = target.includes('%');
     const hasK = target.includes('k');
     const numericPart = parseFloat(target.replace(/[^0-9.]/g, ''));
@@ -29,7 +28,7 @@ const AnimatedStat: React.FC<{ target: string; duration?: number }> = ({ target,
     const timer = setInterval(() => {
       current += increment;
       if (current >= numericPart) {
-        setDisplay(target); // Set final formatted value
+        setDisplay(target);
         clearInterval(timer);
       } else {
         let formatted = '';
@@ -50,47 +49,119 @@ const AnimatedStat: React.FC<{ target: string; duration?: number }> = ({ target,
   return <span>{display}</span>;
 };
 
+// Time-of-day greeting
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return { text: 'Good Morning', icon: Sun, emoji: '☀️' };
+  if (hour < 17) return { text: 'Good Afternoon', icon: CloudSun, emoji: '🌤️' };
+  return { text: 'Good Evening', icon: Moon, emoji: '🌙' };
+};
+
+// Floating paw prints for hero
+const FloatingPaws: React.FC = () => {
+  const paws = Array.from({ length: 6 }, (_, i) => ({
+    left: `${15 + Math.random() * 70}%`,
+    top: `${10 + Math.random() * 80}%`,
+    size: 12 + Math.random() * 10,
+    delay: i * 0.8,
+    duration: 4 + Math.random() * 3,
+    rotate: -30 + Math.random() * 60,
+  }));
+
+  return (
+    <>
+      {paws.map((paw, i) => (
+        <PawPrint
+          key={i}
+          className="absolute text-white/[0.06] animate-float pointer-events-none"
+          style={{
+            left: paw.left,
+            top: paw.top,
+            width: paw.size,
+            height: paw.size,
+            animationDelay: `${paw.delay}s`,
+            animationDuration: `${paw.duration}s`,
+            transform: `rotate(${paw.rotate}deg)`,
+          }}
+        />
+      ))}
+    </>
+  );
+};
+
 const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => {
   const { t } = useLanguage();
   const recentReports = reports.slice(0, 3);
   const availableDonations = donations.filter(d => d.status === DonationStatus.AVAILABLE);
   const [mounted, setMounted] = useState(false);
+  const greeting = getGreeting();
   
   useEffect(() => {
     requestAnimationFrame(() => setMounted(true));
   }, []);
 
+  // Quick action links
+  const quickActions = [
+    { label: t('reportEmergency'), to: '/report', icon: Zap, color: 'from-rose-500 to-rose-600' },
+    { label: t('adoption'), to: '/adoption', icon: Heart, color: 'from-pink-500 to-rose-500' },
+    { label: t('shop'), to: '/shop', icon: Sparkles, color: 'from-violet-500 to-purple-600' },
+  ];
+
   return (
-    <div className={`p-6 md:p-0 space-y-8 pb-24 md:pb-6 mesh-gradient min-h-screen transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-      {/* Desktop Welcome */}
-      <div className="hidden md:block mb-8">
+    <div className={`p-6 md:p-0 space-y-8 pb-36 md:pb-6 mesh-gradient min-h-screen transition-all duration-700 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Desktop Welcome with time-of-day greeting */}
+      <div className="hidden md:block mb-8 page-enter">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">Live</span>
         </div>
-        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
           {t('missionControl')}
+          <span className="text-2xl">{greeting.emoji}</span>
         </h1>
-        <p className="text-gray-500 font-medium mt-1">{t('welcomeBack')} <span className="text-emerald-600 font-bold">{t('onlineMonitoring')}</span></p>
+        <p className="text-gray-500 font-medium mt-1">{greeting.text}! <span className="text-emerald-600 font-bold">{t('onlineMonitoring')}</span></p>
+      </div>
+
+      {/* Mobile greeting */}
+      <div className="md:hidden page-enter">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-lg">{greeting.emoji}</span>
+          <span className="text-sm font-bold text-gray-500">{greeting.text}</span>
+        </div>
+      </div>
+
+      {/* Quick Action Pills — horizontal scroll */}
+      <div className="flex gap-3 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-hide md:hidden page-enter" style={{ animationDelay: '0.1s' }}>
+        {quickActions.map((action, i) => (
+          <Link
+            key={i}
+            to={action.to}
+            className={`flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r ${action.color} text-white rounded-full whitespace-nowrap text-xs font-bold shadow-lg active:scale-95 transition-transform shine-button`}
+          >
+            <action.icon className="w-3.5 h-3.5" />
+            {action.label}
+          </Link>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Main Hero Card — animated gradient border */}
+        {/* Main Hero Card — animated gradient with floating paws */}
         <div className="md:col-span-2 relative group">
           <div className="absolute -inset-1 rounded-[var(--border-radius-xl)] blur-lg opacity-30 group-hover:opacity-50 transition-all duration-700 animate-gradient-shift"
             style={{ background: 'linear-gradient(135deg, #059669, #34d399, #6ee7b7, #059669)', backgroundSize: '200% 200%' }}
           />
           <Link 
             to="/report" 
-            className="relative h-full flex flex-col md:flex-row items-center md:items-start md:justify-between rounded-[var(--border-radius-xl)] p-8 md:p-10 shadow-2xl shadow-emerald-200/50 active:scale-[0.99] transition-all duration-500 overflow-hidden hover:shadow-emerald-300/60 card-lift"
+            className="relative h-full flex flex-col md:flex-row items-center md:items-start md:justify-between rounded-[var(--border-radius-xl)] p-8 md:p-10 shadow-2xl shadow-emerald-200/50 active:scale-[0.99] transition-all duration-500 overflow-hidden hover:shadow-emerald-300/60 card-lift spotlight-card"
             style={{ background: 'linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%)' }}
           >
-            {/* Decorative orbs */}
+            {/* Decorative elements */}
             <div className="absolute top-[-30%] right-[-10%] w-[60%] h-[60%] bg-white/5 rounded-full blur-3xl animate-float-slow" />
             <div className="absolute bottom-[-20%] left-[-10%] w-[40%] h-[40%] bg-emerald-300/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }} />
+            <FloatingPaws />
             
             <div className="z-10 text-center md:text-left">
-              <div className="inline-flex p-4 bg-white/15 rounded-3xl backdrop-blur-md ring-1 ring-white/20 mb-6 animate-float" style={{ animationDuration: '4s' }}>
+              <div className="inline-flex p-4 bg-white/15 rounded-3xl backdrop-blur-md ring-1 ring-white/20 mb-6 animate-float neon-glow" style={{ animationDuration: '4s' }}>
                 <Camera className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
@@ -104,25 +175,25 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
             </div>
             
             <div className="mt-8 md:mt-0 md:self-end z-10">
-               <div className="w-12 h-12 rounded-full bg-white text-emerald-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+               <div className="w-12 h-12 rounded-full bg-white text-emerald-600 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
                  <ArrowUpRight className="w-6 h-6" />
                </div>
             </div>
           </Link>
         </div>
 
-        {/* Quick Stats Grid — with counting animation */}
+        {/* Quick Stats Grid — with counting animation & spotlight */}
         <div className="grid grid-cols-3 md:grid-cols-1 gap-3 md:gap-4">
           {[
-            { icon: Heart, count: '1.2k', label: t('livesSaved'), color: 'text-rose-500', bgIcon: 'bg-rose-50', bgCard: 'md:bg-gradient-to-br md:from-rose-50 md:to-pink-50', borderHover: 'hover:border-rose-200' },
-            { icon: Users, count: '450', label: t('activeHeroes'), color: 'text-blue-500', bgIcon: 'bg-blue-50', bgCard: 'md:bg-gradient-to-br md:from-blue-50 md:to-indigo-50', borderHover: 'hover:border-blue-200' },
-            { icon: Shield, count: '98%', label: t('responseRate'), color: 'text-emerald-500', bgIcon: 'bg-emerald-50', bgCard: 'md:bg-gradient-to-br md:from-emerald-50 md:to-teal-50', borderHover: 'hover:border-emerald-200' },
+            { icon: Heart, count: '1.2k', label: t('livesSaved'), color: 'text-rose-500', bgIcon: 'bg-rose-50', bgCard: 'md:bg-gradient-to-br md:from-rose-50 md:to-pink-50', borderHover: 'hover:border-rose-200', shadowHover: 'hover:shadow-rose-100/50' },
+            { icon: Users, count: '450', label: t('activeHeroes'), color: 'text-blue-500', bgIcon: 'bg-blue-50', bgCard: 'md:bg-gradient-to-br md:from-blue-50 md:to-indigo-50', borderHover: 'hover:border-blue-200', shadowHover: 'hover:shadow-blue-100/50' },
+            { icon: Shield, count: '98%', label: t('responseRate'), color: 'text-emerald-500', bgIcon: 'bg-emerald-50', bgCard: 'md:bg-gradient-to-br md:from-emerald-50 md:to-teal-50', borderHover: 'hover:border-emerald-200', shadowHover: 'hover:shadow-emerald-100/50' },
           ].map((stat, i) => (
             <div 
               key={i} 
               className={`bg-white ${stat.bgCard} p-4 md:p-6 rounded-[var(--border-radius-lg)] text-center md:text-left md:flex md:items-center md:gap-4 
-                border border-gray-100/50 shadow-sm hover:shadow-lg ${stat.borderHover} transition-all duration-500 card-lift`}
-              style={{ animationDelay: `${i * 0.1}s` }}
+                border border-gray-100/50 shadow-sm hover:shadow-xl ${stat.borderHover} ${stat.shadowHover} transition-all duration-500 card-lift spotlight-card animate-slide-in-bottom`}
+              style={{ animationDelay: `${0.1 + i * 0.1}s` }}
             >
               <div className={`w-11 h-11 rounded-2xl flex items-center justify-center ${stat.bgIcon} mb-2 md:mb-0 mx-auto md:mx-0 shrink-0`}>
                 <stat.icon className={`w-5 h-5 ${stat.color}`} />
@@ -144,7 +215,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
           <div className="flex justify-between items-end px-2">
             <div>
               <h3 className="text-lg font-extrabold text-gray-900">{t('nearbyIncidents')}</h3>
-              <p className="text-xs text-gray-500 font-medium mt-1">{t('liveUpdates')}</p>
+              <p className="text-xs text-gray-500 font-medium mt-1 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                {t('liveUpdates')}
+              </p>
             </div>
             <Link to="/dashboard" className="text-emerald-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 hover:underline hover:text-emerald-700 transition-colors">
               {t('viewMap')} <ChevronRight className="w-3 h-3" />
@@ -165,11 +239,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
                 <Link 
                   key={report.id}
                   to={`/status/${report.id}`}
-                  className="group flex items-center gap-5 p-4 bg-white border border-gray-100 rounded-[var(--border-radius-lg)] hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-50/50 transition-all duration-500 card-lift"
+                  className="group flex items-center gap-5 p-4 bg-white border border-gray-100 rounded-[var(--border-radius-lg)] hover:border-emerald-200 hover:shadow-xl hover:shadow-emerald-50/50 transition-all duration-500 card-lift spotlight-card animate-slide-in-bottom"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="relative shrink-0">
                     <img src={report.photo} alt="Case" className="w-20 h-20 rounded-2xl object-cover bg-gray-100 ring-4 ring-white group-hover:ring-emerald-50 transition-all" />
+                    {/* Status pulse dot */}
+                    <div className={`absolute -top-1 -right-1 w-4 h-4 rounded-full border-2 border-white flex items-center justify-center ${
+                      report.status === 'REPORTED' ? 'bg-orange-400' : report.status === 'RESCUED' ? 'bg-emerald-400' : 'bg-blue-400'
+                    }`}>
+                      <div className={`w-2 h-2 rounded-full animate-pulse ${
+                        report.status === 'REPORTED' ? 'bg-orange-200' : 'bg-emerald-200'
+                      }`} />
+                    </div>
                   </div>
                   <div className="flex-1 min-w-0 py-1">
                     <div className="flex justify-between items-center mb-1.5">
@@ -189,7 +271,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
                     </div>
                   </div>
                   <div className="pr-2">
-                    <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                    <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 group-hover:scale-110">
                       <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-white" />
                     </div>
                   </div>
@@ -202,9 +284,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
         {/* Sidebar Widgets */}
         <div className="space-y-6">
           {role === 'VOLUNTEER' || role === 'NGO' ? (
-            <Link to="/food-donations" className="block bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[var(--border-radius-xl)] p-6 border border-blue-100/50 text-center shadow-sm hover:shadow-xl hover:shadow-blue-100/50 transition-all duration-500 card-lift group">
+            <Link to="/food-donations" className="block bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[var(--border-radius-xl)] p-6 border border-blue-100/50 text-center shadow-sm hover:shadow-xl hover:shadow-blue-100/50 transition-all duration-500 card-lift group spotlight-card">
               <div className="flex justify-center mb-4">
-                  <div className="p-3.5 bg-white rounded-2xl shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
+                  <div className="p-3.5 bg-white rounded-2xl shadow-sm text-blue-600 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                     <Soup className="w-6 h-6" />
                   </div>
               </div>
@@ -213,15 +295,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
                 {t('foodBankDesc', { count: availableDonations.length })}
               </p>
               <div
-                className="mt-5 inline-block px-6 py-3 bg-blue-500 text-white font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-blue-200/50 hover:bg-blue-600 transition-colors active:scale-95"
+                className="mt-5 inline-block px-6 py-3 bg-blue-500 text-white font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-blue-200/50 hover:bg-blue-600 transition-colors active:scale-95 shine-button"
               >
                 {t('viewDonations')}
               </div>
             </Link>
           ) : (
-            <Link to="/donate" className="block bg-gradient-to-br from-amber-50 to-orange-50 rounded-[var(--border-radius-xl)] p-6 border border-amber-100/50 text-center shadow-sm hover:shadow-xl hover:shadow-amber-100/50 transition-all duration-500 card-lift group">
+            <Link to="/donate" className="block bg-gradient-to-br from-amber-50 to-orange-50 rounded-[var(--border-radius-xl)] p-6 border border-amber-100/50 text-center shadow-sm hover:shadow-xl hover:shadow-amber-100/50 transition-all duration-500 card-lift group spotlight-card">
                <div className="flex justify-center mb-4">
-                  <div className="p-3.5 bg-white rounded-2xl shadow-sm text-amber-600 group-hover:scale-110 transition-transform">
+                  <div className="p-3.5 bg-white rounded-2xl shadow-sm text-amber-600 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                     <Bone className="w-6 h-6" />
                   </div>
                </div>
@@ -230,7 +312,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
                  {t('feedAStrayDesc')}
                </p>
                <div
-                 className="mt-5 inline-block px-6 py-3 bg-amber-500 text-white font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-amber-200/50 hover:bg-amber-600 transition-colors active:scale-95"
+                 className="mt-5 inline-block px-6 py-3 bg-amber-500 text-white font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-amber-200/50 hover:bg-amber-600 transition-colors active:scale-95 shine-button"
                >
                  {t('donateFood')}
                </div>
@@ -249,21 +331,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
               <p className="text-xs text-white/80 font-medium mt-2 leading-relaxed">
                 {t('adoptDesc')}
               </p>
-              <div className="mt-4 inline-block px-5 py-2.5 bg-white text-rose-600 font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg hover:bg-rose-50 transition-colors">
+              <div className="mt-4 inline-block px-5 py-2.5 bg-white text-rose-600 font-extrabold rounded-2xl text-xs uppercase tracking-widest shadow-lg hover:bg-rose-50 transition-colors shine-button">
                 {t('findFriend')}
               </div>
             </div>
           </Link>
 
           {/* Daily tip */}
-          <div className="relative overflow-hidden rounded-[var(--border-radius-xl)] p-6 text-white shadow-xl card-lift"
+          <div className="relative overflow-hidden rounded-[var(--border-radius-xl)] p-6 text-white shadow-xl card-lift spotlight-card"
             style={{ background: 'linear-gradient(135deg, #111827 0%, #1f2937 50%, #111827 100%)' }}
           >
             <div className="absolute top-0 right-0 w-40 h-40 rounded-full -mr-12 -mt-12 blur-3xl" style={{ background: 'rgba(16,185,129,0.15)' }} />
             <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full -ml-10 -mb-10 blur-2xl" style={{ background: 'rgba(59,130,246,0.1)' }} />
             
             <div className="flex items-center gap-3 relative z-10">
-              <div className="p-3 bg-emerald-500/15 rounded-2xl backdrop-blur-md border border-emerald-500/20">
+              <div className="p-3 bg-emerald-500/15 rounded-2xl backdrop-blur-md border border-emerald-500/20 neon-glow">
                 <Activity className="w-6 h-6 text-emerald-400" />
               </div>
               <h4 className="font-bold text-lg">{t('dailyTip')}</h4>
@@ -271,8 +353,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ role, reports, donations }) => 
             <p className="text-sm text-gray-300 font-medium leading-relaxed mt-4 relative z-10">
               {t('safetyTip')}
             </p>
-            <button className="mt-4 text-[10px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors relative z-10">
-              Read Safety Guide →
+            <button className="mt-4 text-[10px] font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300 transition-colors relative z-10 flex items-center gap-1 group">
+              Read Safety Guide <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </button>
           </div>
         </div>

@@ -160,18 +160,19 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
       : "Your donation is registered. Please drop it off at our center during operating hours. We look forward to seeing you! Remember, a 5% transaction fee on monetary donations helps keep our servers running, ensuring 95% goes directly to the animals.";
 
     return (
-      <div className="p-6 md:p-0 animate-in fade-in zoom-in duration-500 max-w-3xl mx-auto pb-24 md:pb-6 text-center">
-        <div className="bg-white rounded-[2.5rem] p-8 md:p-16 border-2 border-dashed border-emerald-200 relative overflow-hidden">
-          <div className="w-24 h-24 bg-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-emerald-200 animate-soft-pulse border-4 border-white">
+      <div className="p-6 md:p-0 page-enter max-w-3xl mx-auto pb-24 md:pb-6 text-center">
+        <div className="bg-white rounded-[2.5rem] p-8 md:p-16 border-2 border-dashed border-emerald-200 relative overflow-hidden spotlight-card card-lift">
+          <div className="absolute inset-0 bg-emerald-50/50 blur-3xl rounded-full" />
+          <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-emerald-200/50 border-4 border-white animate-heartbeat">
             <CheckCircle2 className="w-12 h-12 text-white" />
           </div>
-          <h2 className="text-2xl font-800 text-gray-900 tracking-tight">{confirmationTitle}</h2>
-          <p className="text-sm text-gray-600 font-medium mt-4 max-w-md mx-auto leading-relaxed">
-            {confirmationMessage} You are a true hero for the animals!
+          <h2 className="text-3xl font-900 text-gray-900 tracking-tight relative z-10">{confirmationTitle}</h2>
+          <p className="text-sm text-gray-600 font-medium mt-4 max-w-md mx-auto leading-relaxed relative z-10">
+            {confirmationMessage} <br/><br/><span className="text-emerald-600 font-bold">You are a true hero for the animals!</span>
           </p>
           <button
             onClick={handleReset}
-            className="mt-8 px-8 py-4 bg-emerald-600 text-white font-800 rounded-2xl text-sm uppercase tracking-widest shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-colors active:scale-95"
+            className="mt-8 px-8 py-4 bg-gray-900 text-white font-800 rounded-2xl text-sm uppercase tracking-widest hover:bg-emerald-600 transition-all duration-300 active:scale-95 shine-button relative z-10"
           >
             Donate More
           </button>
@@ -183,30 +184,30 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
   // Delivery Method Choice Screen
   if (step === 'deliveryMethod') {
      return (
-       <div className="p-6 md:p-0 animate-in fade-in duration-500 max-w-3xl mx-auto pb-24 md:pb-6 space-y-6">
+       <div className="p-6 md:p-0 page-enter max-w-3xl mx-auto pb-24 md:pb-6 space-y-6">
         <div className="flex items-center gap-4">
-          <button onClick={() => setStep('result')} className="p-3 bg-white border border-gray-100 rounded-full shadow-sm hover:text-emerald-600 transition-colors">
+          <button onClick={() => setStep('result')} className="p-3 bg-white border border-gray-100 rounded-full shadow-sm hover:text-emerald-600 hover:bg-emerald-50 transition-colors">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
             <h1 className="text-3xl font-800 text-gray-900 tracking-tight">How to Donate?</h1>
-            <p className="text-sm text-gray-700 font-medium mt-1">Choose how you'd like to get the food to us.</p>
+            <p className="text-[10px] text-emerald-600 font-800 uppercase tracking-widest mt-1">Choose your method</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <button onClick={() => { setDeliveryMethod('pickup'); setStep('scheduling'); }} className="text-left bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-emerald-300 hover:shadow-xl transition-all active:scale-95 group">
-            <div className="p-4 bg-emerald-50 rounded-3xl inline-block mb-4 group-hover:scale-110 transition-transform">
-              <Truck className="w-8 h-8 text-emerald-600"/>
+          <button onClick={() => { setDeliveryMethod('pickup'); setStep('scheduling'); }} className="text-left bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-100 transition-all active:scale-95 group spotlight-card card-lift">
+            <div className="p-4 bg-emerald-50 rounded-3xl inline-block mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+              <Truck className="w-8 h-8 text-emerald-600 group-hover:text-white"/>
             </div>
             <h3 className="text-lg font-800 text-gray-900">Schedule a Pickup</h3>
-            <p className="text-sm text-gray-600 mt-2 font-medium">Our volunteers will collect the donation right from your doorstep.</p>
+            <p className="text-sm text-gray-500 mt-2 font-medium leading-relaxed">Our volunteers will collect the donation right from your doorstep.</p>
           </button>
-           <button onClick={() => { setDeliveryMethod('dropoff'); setStep('ngoInfo'); }} className="text-left bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-amber-300 hover:shadow-xl transition-all active:scale-95 group">
-            <div className="p-4 bg-amber-50 rounded-3xl inline-block mb-4 group-hover:scale-110 transition-transform">
-              <Building2 className="w-8 h-8 text-amber-600"/>
+           <button onClick={() => { setDeliveryMethod('dropoff'); setStep('ngoInfo'); }} className="text-left bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-amber-300 hover:shadow-xl hover:shadow-amber-100 transition-all active:scale-95 group spotlight-card card-lift">
+            <div className="p-4 bg-amber-50 rounded-3xl inline-block mb-4 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
+              <Building2 className="w-8 h-8 text-amber-600 group-hover:text-white"/>
             </div>
             <h3 className="text-lg font-800 text-gray-900">Drop off at NGO</h3>
-            <p className="text-sm text-gray-600 mt-2 font-medium">Visit our nearest center and hand over the donation personally.</p>
+            <p className="text-sm text-gray-500 mt-2 font-medium leading-relaxed">Visit our nearest center and hand over the donation personally.</p>
           </button>
         </div>
        </div>
@@ -216,37 +217,46 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
   // NGO Info Screen
   if (step === 'ngoInfo') {
     return (
-      <div className="p-6 md:p-0 animate-in fade-in duration-500 max-w-3xl mx-auto pb-24 md:pb-6 space-y-6">
+      <div className="p-6 md:p-0 page-enter max-w-3xl mx-auto pb-24 md:pb-6 space-y-6">
         <div className="flex items-center gap-4">
-          <button onClick={() => setStep('deliveryMethod')} className="p-3 bg-white border border-gray-100 rounded-full shadow-sm hover:text-emerald-600 transition-colors">
+          <button onClick={() => setStep('deliveryMethod')} className="p-3 bg-white border border-gray-100 rounded-full shadow-sm hover:text-emerald-600 transition-colors hover:bg-emerald-50">
             <ChevronLeft className="w-5 h-5" />
           </button>
           <div>
             <h1 className="text-3xl font-800 text-gray-900 tracking-tight">Drop-off Point</h1>
-            <p className="text-sm text-gray-700 font-medium mt-1">Our doors are open for your contribution.</p>
+            <p className="text-[10px] text-emerald-600 font-800 uppercase tracking-widest mt-1">Our doors are open</p>
           </div>
         </div>
 
-        <div className="bg-white rounded-[2.5rem] p-6 border border-gray-100 shadow-lg shadow-gray-50/50 space-y-6">
-           <div className="aspect-[16/7] bg-gray-100 rounded-3xl overflow-hidden">
+        <div className="bg-white rounded-[2.5rem] p-6 border border-gray-100 shadow-sm space-y-6 card-lift">
+           <div className="aspect-[16/7] bg-gray-100 rounded-[2rem] overflow-hidden relative">
              <img src="https://maps.googleapis.com/maps/api/staticmap?center=19.0760,72.8777&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:P%7C19.0760,72.8777&key=dummy" alt="Map" className="w-full h-full object-cover" />
+             {/* Fake Pulse on map */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full border-2 border-rose-500 animate-pulse-ring" />
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-rose-500" />
            </div>
            <div>
-             <h3 className="text-lg font-800 text-gray-900">Hope for Paws Center</h3>
-             <p className="text-sm font-medium text-gray-600 mt-1">123, Kindness Street, Animal City, 400050</p>
+             <h3 className="text-xl font-800 text-gray-900">Hope for Paws Center</h3>
+             <p className="text-sm font-medium text-gray-500 mt-1 flex items-center gap-2"><MapPin className="w-4 h-4 text-rose-500"/> 123, Kindness Street, Animal City, 400050</p>
            </div>
            <div className="grid grid-cols-2 gap-4">
-             <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Timings</p>
-               <p className="font-bold text-sm text-gray-800">10:00 AM - 6:00 PM</p>
+             <div className="bg-emerald-50 p-4 rounded-[1.5rem] border border-emerald-100 flex items-center gap-3">
+               <Clock className="w-5 h-5 text-emerald-600" />
+               <div>
+                 <p className="text-[9px] font-extrabold text-emerald-600 uppercase tracking-widest">Timings</p>
+                 <p className="font-bold text-sm text-gray-900">10am - 6pm</p>
+               </div>
              </div>
-             <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
-               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Days</p>
-               <p className="font-bold text-sm text-gray-800">Mon - Sat</p>
+             <div className="bg-blue-50 p-4 rounded-[1.5rem] border border-blue-100 flex items-center gap-3">
+               <Calendar className="w-5 h-5 text-blue-600" />
+               <div>
+                 <p className="text-[9px] font-extrabold text-blue-600 uppercase tracking-widest">Days</p>
+                 <p className="font-bold text-sm text-gray-900">Mon - Sat</p>
+               </div>
              </div>
            </div>
-           <button onClick={handleSubmitDonation} className="w-full bg-emerald-600 text-white font-800 text-base py-4 rounded-2xl shadow-lg shadow-emerald-200 transition-all active:scale-95 hover:bg-emerald-700 flex items-center justify-center gap-3">
-              I will Drop it Off
+           <button onClick={handleSubmitDonation} className="w-full bg-gray-900 text-white font-800 text-base py-4 rounded-2xl shadow-lg hover:bg-emerald-600 transition-colors duration-300 active:scale-95 flex items-center justify-center gap-3 shine-button">
+              <CheckCircle2 className="w-5 h-5" /> I will Drop it Off
            </button>
         </div>
       </div>
@@ -305,37 +315,52 @@ const DonationScreen: React.FC<DonationScreenProps> = ({ onDonate, currentUser }
 
   // Main Upload and Analysis Screen
   return (
-    <div className="p-6 md:p-0 animate-in fade-in duration-500 max-w-3xl mx-auto pb-24 md:pb-6 space-y-6">
-      <div className="flex items-center gap-4">
-        <button onClick={() => navigate(-1)} className="p-3 bg-white border border-gray-100 rounded-full shadow-sm hover:text-emerald-600 transition-colors">
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <div>
-          <h1 className="text-3xl font-800 text-gray-900 tracking-tight">Make a Donation</h1>
-          <p className="text-sm text-gray-700 font-medium mt-1">Help us feed and treat the rescued souls.</p>
+    <div className="p-6 md:p-0 page-enter max-w-3xl mx-auto pb-28 md:pb-6 space-y-6">
+      
+      {/* Premium Hero Banner */}
+      <div className="bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-500 rounded-3xl p-6 md:p-10 text-white shadow-xl relative overflow-hidden spotlight-card mb-8">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-white opacity-[0.07] rounded-full blur-3xl animate-float-slow" />
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-48 h-48 bg-emerald-300 opacity-[0.1] rounded-full blur-2xl animate-float" style={{ animationDelay: '3s' }} />
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl neon-glow animate-bounce-subtle">
+              <Bone className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-extrabold tracking-tight">Make a Donation</h1>
+              <div className="flex items-center gap-1.5 mt-1">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
+                <span className="text-emerald-100/80 text-xs font-bold uppercase tracking-wider">AI Powered</span>
+              </div>
+            </div>
+          </div>
+          <p className="text-emerald-100/90 max-w-xl text-sm font-medium leading-relaxed">
+            Support vet bills, rescue operations, or donate food directly. A 5% transaction fee helps keep our servers running, ensuring 95% goes directly to the animals.
+          </p>
         </div>
       </div>
 
       {step === 'upload' && !photo && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-emerald-300 hover:shadow-xl transition-all group">
+          <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-emerald-300 hover:shadow-xl transition-all group card-lift spotlight-card">
             <div className="p-4 bg-emerald-50 rounded-3xl inline-block mb-4 group-hover:scale-110 transition-transform">
               <Coins className="w-8 h-8 text-emerald-600"/>
             </div>
             <h3 className="text-lg font-800 text-gray-900">Donate Funds</h3>
-            <p className="text-sm text-gray-600 mt-2 font-medium mb-6">Support vet bills and rescue operations. A 5% transaction fee helps keep our servers running, ensuring 95% goes directly to the animals.</p>
-            <button onClick={() => alert("Payment Gateway Integration Coming Soon!")} className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition-colors">
+            <p className="text-sm text-gray-600 mt-2 font-medium mb-6">Support vet bills and rescue operations. A 5% transaction fee helps keep our servers running.</p>
+            <button onClick={() => alert("Payment Gateway Integration Coming Soon!")} className="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl hover:bg-emerald-700 transition-colors shine-button">
               Donate Now
             </button>
           </div>
           
-          <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-amber-300 hover:shadow-xl transition-all group">
+          <div className="bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm hover:border-amber-300 hover:shadow-xl transition-all group card-lift spotlight-card">
             <div className="p-4 bg-amber-50 rounded-3xl inline-block mb-4 group-hover:scale-110 transition-transform">
               <Bone className="w-8 h-8 text-amber-600"/>
             </div>
             <h3 className="text-lg font-800 text-gray-900">Donate Food</h3>
-            <p className="text-sm text-gray-600 mt-2 font-medium mb-6">Have extra pet food? Upload a photo and our AI will check its safety and suitability for our animals.</p>
-            <label className="w-full bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600 transition-colors cursor-pointer flex items-center justify-center">
+            <p className="text-sm text-gray-600 mt-2 font-medium mb-6">Have extra pet food? Upload a photo and our AI will check its safety and suitability.</p>
+            <label className="w-full bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600 transition-colors cursor-pointer flex items-center justify-center shine-button">
               Upload Food Photo
               <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} />
             </label>

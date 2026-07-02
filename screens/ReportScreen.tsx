@@ -458,32 +458,37 @@ const ReportScreen: React.FC<ReportScreenProps> = ({ onReport, currentUser, repo
                     </div>
                  </div>
                  <div className="space-y-6">
-                    <div className="glass-card border border-white/60 shadow-sm rounded-2xl p-4">
-                       <label className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase tracking-widest mb-2 ml-1"><MapPin className="w-4 h-4"/> Location</label>
+                    <div className="glass-card border border-white/60 shadow-sm rounded-[2rem] p-6 spotlight-card card-lift">
+                       <label className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase tracking-widest mb-4 ml-1"><MapPin className="w-4 h-4 text-emerald-500"/> Location Details</label>
                         {isManualEntry ? (
                           <textarea
                             placeholder="e.g., 'Corner of Main St and Park Ave'"
-                            className="w-full h-24 p-3 bg-gray-50 border-gray-200 rounded-xl text-sm"
+                            className="w-full h-24 p-4 bg-gray-50 border border-gray-100 focus:border-emerald-300 rounded-2xl text-sm outline-none transition-colors"
                             value={manualAddress}
                             onChange={(e) => setManualAddress(e.target.value)}
                           />
                         ) : (
-                          <div className="p-3 bg-gray-50 rounded-xl">
-                            <p className="text-xs font-bold text-gray-800 leading-relaxed">{areaInfo || 'Loading...'}</p>
+                          <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 flex items-start gap-3">
+                            <div className="w-8 h-8 rounded-full border-2 border-emerald-500 animate-pulse-ring flex-shrink-0 mt-1 relative">
+                              <div className="absolute inset-1 bg-emerald-500 rounded-full" />
+                            </div>
+                            <p className="text-xs font-bold text-emerald-900 leading-relaxed">{areaInfo || 'Loading...'}</p>
                           </div>
                         )}
-                        <button onClick={() => setIsManualEntry(!isManualEntry)} className="text-[10px] font-bold text-emerald-600 mt-2 hover:underline">
+                        <button onClick={() => setIsManualEntry(!isManualEntry)} className="text-[10px] font-bold text-emerald-600 mt-4 hover:underline">
                           {isManualEntry ? 'Use GPS Location' : 'Enter Manually'}
                         </button>
                     </div>
                     <button
                       onClick={handleSubmit}
                       disabled={isGeocoding || isCheckingDuplicate}
-                      className="glow-button w-full bg-emerald-600 text-white font-800 text-lg py-5 rounded-2xl shadow-2xl shadow-emerald-200 disabled:bg-gray-300 disabled:shadow-none flex items-center justify-center gap-3 hover:bg-emerald-700 transition-colors">
-                      {isGeocoding ? <><Loader2 className="w-6 h-6 animate-spin" /> Verifying Address...</> : isCheckingDuplicate ? <><Loader2 className="w-6 h-6 animate-spin" /> Checking Duplicates...</> : 'Broadcast Emergency Report'}
+                      className="w-full bg-rose-600 text-white font-900 text-lg py-5 rounded-2xl shadow-xl shadow-rose-200/50 disabled:bg-gray-300 disabled:shadow-none flex items-center justify-center gap-3 hover:bg-rose-700 transition-all active:scale-95 shine-button group relative overflow-hidden"
+                    >
+                      <div className="absolute inset-0 bg-white/20 animate-pulse opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {isGeocoding ? <><Loader2 className="w-6 h-6 animate-spin" /> Verifying Address...</> : isCheckingDuplicate ? <><Loader2 className="w-6 h-6 animate-spin" /> Checking Duplicates...</> : <><AlertCircle className="w-6 h-6 animate-heartbeat" /> Broadcast Emergency Report</>}
                     </button>
-                    <p className="text-[10px] text-center text-gray-500 font-bold uppercase tracking-tighter flex items-center justify-center gap-1.5">
-                      <AlertCircle className="w-3.5 h-3.5" /> 15 nearest volunteers will be notified
+                    <p className="text-[10px] text-center text-gray-500 font-bold uppercase tracking-tighter flex items-center justify-center gap-1.5 bg-gray-50 p-2 rounded-xl">
+                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-500" /> 15 nearest volunteers will be notified instantly
                     </p>
                  </div>
               </div>

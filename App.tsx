@@ -377,13 +377,16 @@ const AppContent: React.FC = () => {
             <aside className="hidden md:flex flex-col w-72 h-screen sticky top-0 z-40 p-6 shadow-sm mesh-gradient border-r border-emerald-900/5">
               <div className="absolute inset-0 bg-white/40 backdrop-blur-3xl z-[-1]" />
               <Link to="/" className="flex items-center gap-3 mb-10 px-2 group">
-                <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg shadow-emerald-200 group-hover:scale-105 transition-transform">
+                <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg shadow-emerald-200 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
                   <PawPrint className="w-6 h-6 text-white" />
                 </div>
                 <span className="font-extrabold text-gray-800 text-xl tracking-tight italic">REScue <span className="text-emerald-600">Paw</span></span>
               </Link>
               
-              <nav className="flex-1 space-y-2">
+              <nav className="flex-1 space-y-1.5">
+                <div className="px-4 py-2">
+                  <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">Navigation</span>
+                </div>
                 <SidebarLink to="/" icon={Home} label={t('home')} />
                 <SidebarLink 
                   to={currentUser.role === 'CITIZEN' ? '/status-overview' : '/dashboard'} 
@@ -392,6 +395,9 @@ const AppContent: React.FC = () => {
                 />
                 <SidebarLink to="/report" icon={PlusCircle} label={t('reportEmergency')} highlight />
                 
+                <div className="px-4 pt-4 pb-2">
+                  <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">Community</span>
+                </div>
                 {currentUser.role === 'VOLUNTEER' || currentUser.role === 'NGO' ? (
                   <SidebarLink to="/food-donations" icon={Soup} label={t('foodBank')} />
                 ) : (
@@ -401,12 +407,15 @@ const AppContent: React.FC = () => {
                 <SidebarLink to="/adoption" icon={Heart} label={t('adoption')} />
                 <SidebarLink to="/shop" icon={ShoppingBag} label={t('shop')} />
 
+                <div className="px-4 pt-4 pb-2">
+                  <span className="text-[9px] font-extrabold text-gray-400 uppercase tracking-[0.2em]">Account</span>
+                </div>
                 <SidebarLink to="/profile" icon={UserCircle} label={t('profile')} />
               </nav>
 
-              <div className="pt-6 border-t border-gray-50 mt-auto">
-                <Link to="/profile" className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50 transition-colors mb-2">
-                  <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-700 font-bold border-2 border-white shadow-sm overflow-hidden">
+              <div className="pt-6 border-t border-gray-100/80 mt-auto">
+                <Link to="/profile" className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-gray-50/80 transition-all mb-2 group">
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-full flex items-center justify-center text-emerald-700 font-bold ring-2 ring-emerald-200/50 shadow-sm overflow-hidden group-hover:ring-emerald-300 transition-all">
                     {currentUser.avatar ? (
                       <img src={currentUser.avatar} alt="User Avatar" className="w-full h-full object-cover" />
                     ) : (
@@ -420,9 +429,9 @@ const AppContent: React.FC = () => {
                 </Link>
                 <button 
                   onClick={logout}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-colors text-xs font-bold uppercase tracking-widest"
+                  className="w-full flex items-center gap-3 px-4 py-3 text-gray-500 hover:bg-rose-50 hover:text-rose-600 rounded-xl transition-all text-xs font-bold uppercase tracking-widest group"
                 >
-                  <LogOut className="w-4 h-4" /> {t('signOut')}
+                  <LogOut className="w-4 h-4 group-hover:rotate-12 transition-transform" /> {t('signOut')}
                 </button>
               </div>
             </aside>
@@ -475,39 +484,8 @@ const AppContent: React.FC = () => {
                 </div>
               </main>
 
-              {/* Mobile Bottom Nav */}
-              <nav className="md:hidden fixed bottom-6 left-6 right-6 glass-card rounded-[2rem] px-6 py-4 flex justify-around items-center safe-bottom z-50 shadow-2xl shadow-emerald-900/10 border border-white/60">
-                <Link to="/" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
-                  <Home className="w-6 h-6" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('home')}</span>
-                </Link>
-                <Link to="/adoption" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
-                  <Heart className="w-6 h-6" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('adoption')}</span>
-                </Link>
-                <Link to="/shop" className="flex flex-col items-center gap-1 text-gray-500 hover:text-emerald-600 active:text-emerald-600 transition-colors">
-                  <ShoppingBag className="w-6 h-6" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('shop')}</span>
-                </Link>
-                <Link to="/report" className="flex flex-col items-center -mt-10 relative">
-                  <div className="absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-50 animate-glow-pulse" />
-                  <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center shadow-lg shadow-emerald-300/50 border-[3px] border-white transform transition-transform active:scale-95 hover:scale-105 hover:rotate-12">
-                    <PlusCircle className="w-7 h-7 text-white" />
-                  </div>
-                  <span className="text-[10px] font-black text-emerald-600 mt-1.5 uppercase">{t('report')}</span>
-                </Link>
-                {currentUser.role === 'VOLUNTEER' || currentUser.role === 'NGO' ? (
-                  <Link to="/food-donations" className="flex flex-col items-center gap-1 text-gray-500 hover:text-amber-500 active:text-amber-600 transition-colors">
-                    <Soup className="w-6 h-6" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">{t('food')}</span>
-                  </Link>
-                ) : (
-                  <Link to="/donate" className="flex flex-col items-center gap-1 text-gray-500 hover:text-amber-500 active:text-amber-600 transition-colors">
-                    <Bone className="w-6 h-6" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider">{t('donate')}</span>
-                  </Link>
-                )}
-              </nav>
+              {/* Mobile Bottom Nav — iOS-level polish */}
+              <BottomNav currentUser={currentUser} reports={reports} t={t} />
 
               <ChatAssistant />
             </div>
@@ -555,22 +533,73 @@ const App: React.FC = () => (
   </Router>
 );
 
-// Sidebar Helper Component
+// Sidebar Helper Component (Enhanced with left bar indicator)
 const SidebarLink = ({ to, icon: Icon, label, highlight = false }: { to: string, icon: any, label: string, highlight?: boolean }) => {
   const location = useLocation();
-  const isActive = location.pathname === to || location.pathname.startsWith(to + '/');
+  const isActive = (to === '/' && location.pathname === '/') || (to !== '/' && location.pathname.startsWith(to));
   
   return (
-    <Link to={to} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all font-bold text-sm group ${
+    <Link to={to} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 font-bold text-sm group relative ${
       isActive || highlight
-        ? highlight ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-200' : 'bg-emerald-50 text-emerald-700' 
-        : 'text-gray-700 hover:bg-gray-50 hover:text-emerald-600'
+        ? highlight ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white shadow-lg shadow-emerald-200/50' : 'bg-emerald-50/80 text-emerald-700 sidebar-active' 
+        : 'text-gray-600 hover:bg-gray-50/80 hover:text-emerald-600'
     }`}>
-      <Icon className={`w-5 h-5 ${highlight ? 'text-white' : (isActive ? 'text-emerald-600' : 'text-gray-500 group-hover:text-emerald-500')}`} />
+      <Icon className={`w-5 h-5 transition-all duration-300 ${highlight ? 'text-white' : (isActive ? 'text-emerald-600' : 'text-gray-400 group-hover:text-emerald-500')}`} />
       {label}
-      {isActive && !highlight && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-600" />}
+      {isActive && !highlight && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
     </Link>
   );
 };
 
+// Bottom Navigation Component (Enhanced with active indicators)
+const BottomNav = ({ currentUser, reports, t }: { currentUser: any, reports: any[], t: any }) => {
+  const location = useLocation();
+  const pendingReports = reports.filter((r: any) => r.status === 'REPORTED').length;
+  
+  const NavItem = ({ to, icon: Icon, label, badge }: { to: string, icon: any, label: string, badge?: number }) => {
+    const isActive = (to === '/' && location.pathname === '/') || (to !== '/' && location.pathname.startsWith(to));
+    return (
+      <Link to={to} className={`flex flex-col items-center gap-1 transition-all duration-300 relative ${
+        isActive ? 'text-emerald-600' : 'text-gray-400 hover:text-emerald-500 active:text-emerald-600'
+      }`}>
+        <div className="relative">
+          <Icon className={`w-6 h-6 transition-transform duration-300 ${isActive ? 'scale-110' : ''}`} />
+          {badge !== undefined && badge > 0 && (
+            <span className="badge-new" style={{ top: '-6px', right: '-8px' }}>{badge}</span>
+          )}
+        </div>
+        <span className={`text-[10px] font-bold uppercase tracking-wider transition-all ${isActive ? 'text-emerald-600' : ''}`}>{label}</span>
+        {/* Active indicator dot */}
+        {isActive && (
+          <div className="absolute -bottom-2 w-1 h-1 rounded-full bg-emerald-500 shadow-sm shadow-emerald-300" style={{ animation: 'scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both' }} />
+        )}
+      </Link>
+    );
+  };
+
+  return (
+    <nav className="md:hidden fixed bottom-5 left-5 right-5 glass-frosted rounded-[2rem] px-5 py-3.5 flex justify-around items-center safe-bottom z-50 shadow-2xl shadow-black/8 border border-white/60">
+      <NavItem to="/" icon={Home} label={t('home')} />
+      <NavItem to="/adoption" icon={Heart} label={t('adoption')} />
+      
+      {/* Center Report Button — heartbeat glow */}
+      <Link to="/report" className="flex flex-col items-center -mt-10 relative">
+        <div className={`absolute inset-0 bg-emerald-400 rounded-full blur-md opacity-40 ${pendingReports === 0 ? 'animate-heartbeat' : 'animate-glow-pulse'}`} />
+        <div className="relative w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center shadow-xl shadow-emerald-300/50 border-[3px] border-white transform transition-all duration-300 active:scale-90 hover:scale-105 hover:rotate-12 neon-glow">
+          <PlusCircle className="w-7 h-7 text-white" />
+        </div>
+        <span className="text-[10px] font-black text-emerald-600 mt-1.5 uppercase">{t('report')}</span>
+      </Link>
+      
+      <NavItem to="/shop" icon={ShoppingBag} label={t('shop')} />
+      {currentUser.role === 'VOLUNTEER' || currentUser.role === 'NGO' ? (
+        <NavItem to="/food-donations" icon={Soup} label={t('food')} badge={pendingReports} />
+      ) : (
+        <NavItem to="/donate" icon={Bone} label={t('donate')} />
+      )}
+    </nav>
+  );
+};
+
 export default App;
+
