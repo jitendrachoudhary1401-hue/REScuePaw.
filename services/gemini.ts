@@ -182,20 +182,114 @@ export const analyzeFoodDonation = async (imageB64: string): Promise<FoodAnalysi
 };
 
 /**
- * Chat assistant for first aid advice.
- * Uses gemini-3-flash-preview for speed.
+ * Chat assistant for first aid advice — STREAMING version.
+ * Streams response chunks via onChunk callback for real-time display.
+ * Uses condensed prompt + capped history for minimum latency.
  */
-export const getFirstAidAdvice = async (query: string) => {
-  return handleApiCall(async () => {
+export interface ChatMessage {
+  role: 'user' | 'model';
+  text: string;
+}
+
+// Fast retry specifically for chat — fewer retries, shorter delays
+const handleChatApiCall = async <T>(apiCall: () => Promise<T>, fallbackData: T, retries = 2, delay = 1000): Promise<T> => {
+  try {
+    return await apiCall();
+  } catch (error: any) {
+    if (retries > 0) {
+      const jitter = Math.random() * 500;
+      await new Promise(resolve => setTimeout(resolve, delay + jitter));
+      return handleChatApiCall(apiCall, fallbackData, retries - 1, delay * 1.5);
+    }
+    return fallbackData;
+  }
+};
+
+const CHAT_SYSTEM_PROMPT = `You are **PawMedic AI**, an emergency veterinary triage assistant for street animals in India. Be calm, concise, authoritative.
+
+RESPONSE FORMAT (always):
+**[URGENCY]:** 🔴 CRITICAL / 🟠 URGENT / 🟢 STABLE — (brief reason)
+**⏱️ Time to Vet:** [e.g. "Within 30 min" / "Within 2 hours" / "Within 24 hours"]
+**🩺 Steps:**
+1-5 numbered, actionable first-aid steps
+**⚠️ Do NOT:** dangerous actions to avoid
+**🧰 Supplies:** household items needed
+**🛡️ Safety:** human safety warning (rabies, aggression)
+
+TRIAGE:
+🔴 CRITICAL: heavy bleeding, vehicle hit, seizures, choking, unconscious, poisoning, open fractures, cold newborns
+🟠 URGENT: moderate bleeding, closed fractures, vomiting >6h, heat stroke, eye injury, burns, trapped animal
+🟢 STABLE: minor cuts, mild limp, skin conditions, feeding questions, general care
+
+RULES: Never prescribe meds. Never suggest milk for cats. Never move spinal injuries. For CRITICAL, start with "🚨 This is a medical emergency." Keep it SHORT — max 150 words. Use prior conversation context. Simple language.`;
+
+// Cap history to last 6 exchanges (12 messages) to reduce token count
+const capHistory = (history: ChatMessage[], maxExchanges = 6): ChatMessage[] => {
+  const maxMessages = maxExchanges * 2;
+  return history.length > maxMessages ? history.slice(-maxMessages) : history;
+};
+
+/**
+ * Streaming first aid advice — calls onChunk with each text fragment as it arrives.
+ * Returns the full assembled text when complete.
+ */
+export const getFirstAidAdviceStream = async (
+  query: string,
+  history: ChatMessage[] = [],
+  onChunk: (chunk: string, fullText: string) => void
+): Promise<string> => {
+  return handleChatApiCall(async () => {
+    const cappedHistory = capHistory(history);
+    const contents = [
+      ...cappedHistory.map(msg => ({
+        role: msg.role as 'user' | 'model',
+        parts: [{ text: msg.text }]
+      })),
+      { role: 'user' as const, parts: [{ text: query }] }
+    ];
+
+    const response = await ai.models.generateContentStream({
+      model: FAST_MODEL,
+      contents,
+      config: {
+        systemInstruction: CHAT_SYSTEM_PROMPT,
+      }
+    });
+
+    let fullText = '';
+    for await (const chunk of response) {
+      const text = chunk.text || '';
+      if (text) {
+        fullText += text;
+        onChunk(text, fullText);
+      }
+    }
+
+    return fullText;
+  }, "I am currently offline. **Please keep the animal warm, do not move it if you suspect spinal injury, and call the nearest veterinary clinic immediately.** If you see heavy bleeding, apply gentle pressure with a clean cloth.");
+};
+
+// Keep non-streaming version as fallback
+export const getFirstAidAdvice = async (query: string, history: ChatMessage[] = []) => {
+  return handleChatApiCall(async () => {
+    const cappedHistory = capHistory(history);
+    const contents = [
+      ...cappedHistory.map(msg => ({
+        role: msg.role as 'user' | 'model',
+        parts: [{ text: msg.text }]
+      })),
+      { role: 'user' as const, parts: [{ text: query }] }
+    ];
+
     const response = await ai.models.generateContent({
       model: FAST_MODEL,
-      contents: query,
+      contents,
       config: {
-        systemInstruction: 'You are a helpful, calm veterinary assistant for street animal emergencies. Provide concise, safety-first advice. Do not give medical prescriptions. Emphasize keeping the animal and human safe until professional help arrives.',
+        systemInstruction: CHAT_SYSTEM_PROMPT,
       }
     });
     return response.text;
-  }, "I am currently offline. Please keep the animal warm and call a vet.");
+  }, "I am currently offline. **Please keep the animal warm, do not move it if you suspect spinal injury, and call the nearest veterinary clinic immediately.** If you see heavy bleeding, apply gentle pressure with a clean cloth.");
 };
 
 /**

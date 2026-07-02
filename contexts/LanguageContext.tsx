@@ -150,10 +150,28 @@ const translations: Record<string, Record<Language, string>> = {
   verificationFail: { en: 'Verification Failed', hi: 'सत्यापन विफल' },
   
   // Chat Assistant
-  chatTitle: { en: 'AI Medical Guide', hi: 'एआई मेडिकल गाइड' },
-  chatWelcome: { en: 'Hello! I am your Emergency Pet Assistant. Ask me for first aid advice while help is on the way.', hi: 'नमस्ते! मैं आपका आपातकालीन पालतू सहायक हूँ। मदद आने तक मुझसे प्राथमिक उपचार की सलाह मांगें।' },
-  chatPlaceholder: { en: 'How to stop bleeding...', hi: 'खून बहना कैसे रोकें...' },
-  chatDisclaimer: { en: 'Advice is for emergency use only. Rescuers are being notified.', hi: 'सलाह केवल आपातकालीन उपयोग के लिए है। बचाव दल को सूचित किया जा रहा है।' },
+  chatTitle: { en: 'PawMedic AI', hi: 'पॉमेडिक एआई' },
+  chatSubtitle: { en: 'Emergency Triage Assistant', hi: 'आपातकालीन ट्राइएज सहायक' },
+  chatWelcome: { en: 'Hello! I\'m **PawMedic AI** — your emergency veterinary triage assistant. I can help you with:\n\n🔴 **Critical emergencies** — Bleeding, vehicle accidents, poisoning\n🟠 **Urgent care** — Fractures, heat stroke, eye injuries\n🟢 **General guidance** — Feeding tips, newborn care, safe handling\n\nDescribe the situation or tap a quick action below. **Every second counts.**', hi: 'नमस्ते! मैं **पॉमेडिक एआई** — आपका आपातकालीन पशु चिकित्सा ट्राइएज सहायक हूँ। मैं आपकी मदद कर सकता हूँ:\n\n🔴 **गंभीर आपातकाल** — रक्तस्राव, वाहन दुर्घटना, विषाक्तता\n🟠 **तत्काल देखभाल** — फ्रैक्चर, हीट स्ट्रोक, आंख की चोट\n🟢 **सामान्य मार्गदर्शन** — खिलाने के सुझाव, नवजात देखभाल, सुरक्षित संभाल\n\nस्थिति का वर्णन करें या नीचे क्विक एक्शन चुनें। **हर सेकंड मायने रखता है।**' },
+  chatPlaceholder: { en: 'Describe the emergency...', hi: 'आपातकाल का वर्णन करें...' },
+  chatDisclaimer: { en: 'First aid only — not a vet diagnosis. Always consult a professional.', hi: 'केवल प्राथमिक चिकित्सा — पशु चिकित्सक का निदान नहीं। हमेशा पेशेवर से सलाह लें।' },
+  chatAnalyzing: { en: 'Analyzing emergency...', hi: 'आपातकाल का विश्लेषण...' },
+  chatQuickActions: { en: 'Emergency Quick Actions', hi: 'आपातकालीन त्वरित कार्रवाई' },
+  chatContextLabel: { en: 'Active conversation', hi: 'सक्रिय वार्तालाप' },
+  chatClearHistory: { en: 'Clear chat', hi: 'चैट साफ़ करें' },
+  chatCallVet: { en: '📞 Call Animal Helpline (1962)', hi: '📞 पशु हेल्पलाइन कॉल करें (1962)' },
+  chatUrgencyCritical: { en: '🔴 CRITICAL — Seek vet IMMEDIATELY', hi: '🔴 गंभीर — तुरंत पशु चिकित्सक से मिलें' },
+  chatUrgencyUrgent: { en: '🟠 URGENT — Vet visit recommended within 2 hours', hi: '🟠 तत्काल — 2 घंटे के भीतर पशु चिकित्सक की सलाह लें' },
+  chatUrgencyStable: { en: '🟢 STABLE — Monitor and follow steps below', hi: '🟢 स्थिर — निगरानी करें और नीचे दिए गए चरणों का पालन करें' },
+  // Quick Reply labels
+  chatQR_bleeding: { en: 'Bleeding Won\'t Stop', hi: 'खून नहीं रुक रहा' },
+  chatQR_hitByVehicle: { en: 'Hit by Vehicle', hi: 'वाहन से टक्कर' },
+  chatQR_poisoning: { en: 'Poisoning / Vomiting', hi: 'विषाक्तता / उल्टी' },
+  chatQR_dogBite: { en: 'Dog Bite / Aggression', hi: 'कुत्ते का काटना / आक्रामकता' },
+  chatQR_heatStroke: { en: 'Heat Stroke Signs', hi: 'हीट स्ट्रोक के लक्षण' },
+  chatQR_newborn: { en: 'Newborn Found Alone', hi: 'नवजात अकेला मिला' },
+  chatQR_notToFeed: { en: 'What NOT to Feed', hi: 'क्या न खिलाएं' },
+
 
   // ProfileScreen -> SettingsScreen translations
   accountSettingsTitle: { en: 'Account Settings', hi: 'अकाउंट सेटिंग' },
